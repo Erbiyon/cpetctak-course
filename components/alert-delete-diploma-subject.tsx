@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { toast } from "sonner"
 import {
     AlertDialog,
     AlertDialogAction,
@@ -33,7 +34,7 @@ export default function AlertDeleteDiplomaSubject({ subject, onSubjectDeleted }:
 
     const handleDelete = async () => {
         if (!subject) {
-            alert('ไม่พบข้อมูลรายวิชา')
+            toast.error('ไม่พบข้อมูลรายวิชา')
             return
         }
 
@@ -46,15 +47,15 @@ export default function AlertDeleteDiplomaSubject({ subject, onSubjectDeleted }:
             const result = await response.json()
 
             if (result.success) {
-                alert('ลบรายวิชาเรียบร้อยแล้ว')
+                toast.success('ลบรายวิชาเรียบร้อยแล้ว')
                 if (onSubjectDeleted) {
                     onSubjectDeleted()
                 }
             } else {
-                alert(result.error || 'เกิดข้อผิดพลาด')
+                toast.error(result.error || 'เกิดข้อผิดพลาด')
             }
         } catch (error) {
-            alert('ไม่สามารถลบรายวิชาได้')
+            toast.error('ไม่สามารถลบรายวิชาได้')
             console.error('Error:', error)
         } finally {
             setIsDeleting(false)

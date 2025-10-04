@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { toast } from "sonner"
 import {
     Dialog,
     DialogClose,
@@ -98,7 +99,7 @@ export default function AddBachelorSubject({ onSubjectAdded }: AddBachelorSubjec
     const handleSubmit = async () => {
         // ตรวจสอบข้อมูลที่จำเป็น
         if (!formData.code || !formData.title || !formData.credits) {
-            alert('กรุณากรอกรหัสวิชา ชื่อวิชา และหน่วยกิตให้ครบถ้วน')
+            toast.error('กรุณากรอกรหัสวิชา ชื่อวิชา และหน่วยกิตให้ครบถ้วน')
             return
         }
 
@@ -124,7 +125,7 @@ export default function AddBachelorSubject({ onSubjectAdded }: AddBachelorSubjec
             const result = await response.json()
 
             if (result.success) {
-                alert('เพิ่มรายวิชาเรียบร้อยแล้ว')
+                toast.success('เพิ่มรายวิชาเรียบร้อยแล้ว')
                 // รีเซ็ตฟอร์ม
                 setFormData({
                     groupName: "none",
@@ -140,10 +141,10 @@ export default function AddBachelorSubject({ onSubjectAdded }: AddBachelorSubjec
                     onSubjectAdded()
                 }
             } else {
-                alert(result.error || 'เกิดข้อผิดพลาด')
+                toast.error(result.error || 'เกิดข้อผิดพลาด')
             }
         } catch (error) {
-            alert('ไม่สามารถเพิ่มรายวิชาได้')
+            toast.error('ไม่สามารถเพิ่มรายวิชาได้')
             console.error('Error:', error)
         } finally {
             setIsLoading(false)

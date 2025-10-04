@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { toast } from "sonner"
 import {
     Dialog,
     DialogClose,
@@ -121,12 +122,12 @@ export default function EditBachelorSubject({ subject, onSubjectUpdated }: EditB
     const handleSubmit = async () => {
         // ตรวจสอบข้อมูลที่จำเป็น
         if (!formData.code || !formData.title || !formData.credits) {
-            alert('กรุณากรอกรหัสวิชา ชื่อวิชา และหน่วยกิตให้ครบถ้วน')
+            toast.error('กรุณากรอกรหัสวิชา ชื่อวิชา และหน่วยกิตให้ครบถ้วน')
             return
         }
 
         if (!subject) {
-            alert('ไม่พบข้อมูลรายวิชาที่ต้องการแก้ไข')
+            toast.error('ไม่พบข้อมูลรายวิชาที่ต้องการแก้ไข')
             return
         }
 
@@ -152,17 +153,17 @@ export default function EditBachelorSubject({ subject, onSubjectUpdated }: EditB
             const result = await response.json()
 
             if (result.success) {
-                alert('แก้ไขรายวิชาเรียบร้อยแล้ว')
+                toast.success('แก้ไขรายวิชาเรียบร้อยแล้ว')
                 setIsOpen(false)
                 // เรียก callback function เพื่อรีเฟรชข้อมูลใน parent component
                 if (onSubjectUpdated) {
                     onSubjectUpdated()
                 }
             } else {
-                alert(result.error || 'เกิดข้อผิดพลาด')
+                toast.error(result.error || 'เกิดข้อผิดพลาด')
             }
         } catch (error) {
-            alert('ไม่สามารถแก้ไขรายวิชาได้')
+            toast.error('ไม่สามารถแก้ไขรายวิชาได้')
             console.error('Error:', error)
         } finally {
             setIsLoading(false)

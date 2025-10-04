@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { toast } from "sonner"
 import {
     Dialog,
     DialogClose,
@@ -94,7 +95,7 @@ export default function AddDiplomaSubjectDetail({ subjectId, onDetailAdded, hasD
 
     const handleSubmit = async () => {
         if (!subjectId) {
-            alert('ไม่พบข้อมูลรายวิชา')
+            toast.error('ไม่พบข้อมูลรายวิชา')
             return
         }
 
@@ -123,17 +124,17 @@ export default function AddDiplomaSubjectDetail({ subjectId, onDetailAdded, hasD
             const result = await response.json()
 
             if (result.success) {
-                alert(hasDetail ? 'แก้ไขรายละเอียดรายวิชาเรียบร้อยแล้ว' : 'เพิ่มรายละเอียดรายวิชาเรียบร้อยแล้ว')
+                toast.success(hasDetail ? 'แก้ไขรายละเอียดรายวิชาเรียบร้อยแล้ว' : 'เพิ่มรายละเอียดรายวิชาเรียบร้อยแล้ว')
                 setIsOpen(false)
                 setIsEditMode(false)
                 if (onDetailAdded) {
                     onDetailAdded()
                 }
             } else {
-                alert(result.error || 'เกิดข้อผิดพลาด')
+                toast.error(result.error || 'เกิดข้อผิดพลาด')
             }
         } catch (error) {
-            alert('ไม่สามารถบันทึกรายละเอียดรายวิชาได้')
+            toast.error('ไม่สามารถบันทึกรายละเอียดรายวิชาได้')
             console.error('Error:', error)
         } finally {
             setIsLoading(false)

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Sarabun } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "sonner";
 
 const sarabun = Sarabun({
     subsets: ["latin"],
@@ -31,6 +32,12 @@ export default function RootLayout({
                     disableTransitionOnChange
                 >
                     {children}
+                    <Toaster
+                        position="top-right"
+                        richColors
+                        closeButton
+                        toastOptions={{ className: sarabun.className }}
+                    />
                 </ThemeProvider>
             </body>
         </html>

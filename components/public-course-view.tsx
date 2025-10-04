@@ -241,7 +241,7 @@ export function PublicCourseView({ courseType }: PublicBachelorCourseProps) {
                                                             {subject.detail.description && (
                                                                 <div>
                                                                     <p className="text-sm font-medium text-gray-500">รายละเอียดรายวิชา</p>
-                                                                    <p className="text-sm leading-relaxed">{subject.detail.description}</p>
+                                                                    <p className="text-sm leading-relaxed whitespace-pre-wrap">{subject.detail.description}</p>
                                                                 </div>
                                                             )}
 
