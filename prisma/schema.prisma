@@ -1,0 +1,43 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model Subject {
+    id         Int             @id @default(autoincrement())
+    courseType String          @default("bachelor")
+    groupName  String
+    code       String          @unique
+    title      String
+    credits    Int
+    prereqs    SubjectPrereq[] @relation("SubjectRequiredBy")
+    requiredBy SubjectPrereq[] @relation("SubjectPrereqs")
+    detail     SubjectDetail?
+}
+
+model SubjectDetail {
+    id             Int     @id @default(autoincrement())
+    subjectId      Int     @unique
+    theoryHours    Int?
+    practicalHours Int?
+    selfStudyHours Int?
+    englishTitle   String?
+    originalCode   String?
+    originalTitle  String?
+    description    String?
+    subject        Subject @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+}
+
+model SubjectPrereq {
+    id        Int     @id @default(autoincrement())
+    subjectId Int
+    prereqId  Int
+    subject   Subject @relation("SubjectRequiredBy", fields: [subjectId], references: [id])
+    prereq    Subject @relation("SubjectPrereqs", fields: [prereqId], references: [id])
+
+    @@unique([subjectId, prereqId])
+}
