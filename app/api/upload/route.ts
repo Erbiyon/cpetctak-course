@@ -74,8 +74,9 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        // Save image info to database
-        const imageUrl = `/uploads/activity-blogs/${filename}`;
+        // Save image info to database  
+        // Use dynamic image API route to bypass static file caching
+        const imageUrl = `/api/images/activity-blogs/${filename}`;
 
         let savedImage = null;
         if (activityBlogId && activityBlogId !== 'null') {
