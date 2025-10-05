@@ -1,12 +1,49 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
+export async function GET(
+    request: NextRequest,
+    { params }: { params: { id: string } }
+) {
+    try {
+        const { id: paramId } = await params;
+        const id = parseInt(paramId);
+
+        if (isNaN(id)) {
+            return NextResponse.json(
+                { error: 'ID ของกิจกรรมไม่ถูกต้อง' },
+                { status: 400 }
+            );
+        }
+
+        const activity = await prisma.activity.findUnique({
+            where: { id }
+        });
+
+        if (!activity) {
+            return NextResponse.json(
+                { error: 'ไม่พบกิจกรรมที่ระบุ' },
+                { status: 404 }
+            );
+        }
+
+        return NextResponse.json(activity);
+    } catch (error) {
+        console.error('Error fetching activity:', error);
+        return NextResponse.json(
+            { error: 'เกิดข้อผิดพลาดในการดึงข้อมูลกิจกรรม' },
+            { status: 500 }
+        );
+    }
+}
+
 export async function PUT(
     request: NextRequest,
     { params }: { params: { id: string } }
 ) {
     try {
-        const id = parseInt(params.id);
+        const { id: paramId } = await params;
+        const id = parseInt(paramId);
 
         if (isNaN(id)) {
             return NextResponse.json(
@@ -16,7 +53,7 @@ export async function PUT(
         }
 
         const body = await request.json();
-        const { title, isPublished } = body;
+        const { title } = body;
 
         if (!title) {
             return NextResponse.json(
@@ -42,7 +79,6 @@ export async function PUT(
             where: { id },
             data: {
                 title,
-                isPublished: isPublished || false,
             },
         });
 
@@ -61,7 +97,8 @@ export async function DELETE(
     { params }: { params: { id: string } }
 ) {
     try {
-        const id = parseInt(params.id);
+        const { id: paramId } = await params;
+        const id = parseInt(paramId);
 
         if (isNaN(id)) {
             return NextResponse.json(

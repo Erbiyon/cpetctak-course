@@ -2,7 +2,56 @@ import type { Node as TiptapNode } from "@tiptap/pm/model"
 import { NodeSelection, Selection, TextSelection } from "@tiptap/pm/state"
 import type { Editor } from "@tiptap/react"
 
-export const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
+export const MAX_FILE_SIZE = 2 * 1024 * 1024 // 2MB (ลดจาก 5MB เพื่อจำกัดขนาดรูป)
+
+/**
+ * บีบอัดรูปภาพให้มีขนาดเหมาะสม
+ */
+export const compressImage = (file: File, maxWidth = 800, maxHeight = 600, quality = 0.8): Promise<File> => {
+  return new Promise((resolve) => {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    const img = new Image();
+
+    img.onload = () => {
+      // คำนวณขนาดใหม่โดยรักษาอัตราส่วน
+      let { width, height } = img;
+
+      if (width > height) {
+        if (width > maxWidth) {
+          height = (height * maxWidth) / width;
+          width = maxWidth;
+        }
+      } else {
+        if (height > maxHeight) {
+          width = (width * maxHeight) / height;
+          height = maxHeight;
+        }
+      }
+
+      canvas.width = width;
+      canvas.height = height;
+
+      // วาดรูปภาพลงใน canvas
+      ctx?.drawImage(img, 0, 0, width, height);
+
+      // แปลงเป็น blob แล้วเป็น file
+      canvas.toBlob((blob) => {
+        if (blob) {
+          const compressedFile = new File([blob], file.name, {
+            type: file.type,
+            lastModified: Date.now(),
+          });
+          resolve(compressedFile);
+        } else {
+          resolve(file); // fallback to original file
+        }
+      }, file.type, quality);
+    };
+
+    img.src = URL.createObjectURL(file);
+  });
+};
 
 export const MAC_SYMBOLS: Record<string, string> = {
   mod: "⌘",
@@ -296,23 +345,51 @@ export const handleImageUpload = async (
     throw new Error("No file provided")
   }
 
-  if (file.size > MAX_FILE_SIZE) {
+  // บีบอัดรูปภาพก่อนตรวจสอบขนาด
+  let processedFile = file;
+  if (file.type.startsWith('image/')) {
+    try {
+      processedFile = await compressImage(file);
+      console.log(`Image compressed: ${file.size} → ${processedFile.size} bytes`);
+    } catch (error) {
+      console.warn('Image compression failed, using original file:', error);
+    }
+  }
+
+  if (processedFile.size > MAX_FILE_SIZE) {
     throw new Error(
       `File size exceeds maximum allowed (${MAX_FILE_SIZE / (1024 * 1024)}MB)`
     )
   }
 
-  // For demo/testing: Simulate upload progress. In production, replace the following code
-  // with your own upload implementation.
-  for (let progress = 0; progress <= 100; progress += 10) {
-    if (abortSignal?.aborted) {
+  try {
+    // Create FormData for file upload
+    const formData = new FormData()
+    formData.append('file', processedFile)
+    formData.append('activityBlogId', 'null') // Will be updated when blog is saved
+
+    // Upload to our API
+    const response = await fetch('/api/upload', {
+      method: 'POST',
+      body: formData,
+      signal: abortSignal,
+    })
+
+    if (!response.ok) {
+      const errorData = await response.json()
+      throw new Error(errorData.error || 'Upload failed')
+    }
+
+    const result = await response.json()
+    onProgress?.({ progress: 100 })
+
+    return result.url
+  } catch (error) {
+    if (error instanceof Error && error.name === 'AbortError') {
       throw new Error("Upload cancelled")
     }
-    await new Promise((resolve) => setTimeout(resolve, 500))
-    onProgress?.({ progress })
+    throw error
   }
-
-  return "/images/tiptap-ui-placeholder-image.jpg"
 }
 
 type ProtocolOptions = {

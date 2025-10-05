@@ -40,30 +40,7 @@ const data = {
             url: "/activity-course",
             icon: Activity,
             items: [],
-        },
-        {
-            title: "อาชีพหลังจบ",
-            url: "#",
-            icon: Briefcase,
-            items: [
-                {
-                    title: "สายพัฒนาซอฟต์แวร์",
-                    url: "#",
-                },
-                {
-                    title: "สายวิเคราะห์ระบบ",
-                    url: "#",
-                },
-                {
-                    title: "สายข้อมูลและ AI",
-                    url: "#",
-                },
-                {
-                    title: "สายบริหารและอื่นๆ",
-                    url: "#",
-                },
-            ],
-        },
+        }
     ]
 }
 

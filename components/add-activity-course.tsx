@@ -24,7 +24,6 @@ interface AddActivityCourseProps {
 
 export default function AddActivityCourse({ onActivityAdded }: AddActivityCourseProps) {
     const [title, setTitle] = useState('');
-    const [isPublished, setIsPublished] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
 
@@ -46,14 +45,12 @@ export default function AddActivityCourse({ onActivityAdded }: AddActivityCourse
                 },
                 body: JSON.stringify({
                     title: title.trim(),
-                    isPublished,
                 }),
             });
 
             if (response.ok) {
                 toast.success('บันทึกกิจกรรมเรียบร้อยแล้ว');
                 setTitle('');
-                setIsPublished(false);
                 setIsOpen(false);
                 // Call callback if provided
                 if (onActivityAdded) {
@@ -110,16 +107,6 @@ export default function AddActivityCourse({ onActivityAdded }: AddActivityCourse
                                     })}
                                 </p>
                             </div>
-                            <div>
-                                <div className="flex items-center gap-3">
-                                    <Checkbox
-                                        id="status-published"
-                                        checked={isPublished}
-                                        onCheckedChange={(checked) => setIsPublished(checked as boolean)}
-                                    />
-                                    <Label htmlFor="status-published">เผยแพร่</Label>
-                                </div>
-                            </div>
                         </div>
 
                     </div>
@@ -130,7 +117,6 @@ export default function AddActivityCourse({ onActivityAdded }: AddActivityCourse
                                 variant="outline"
                                 onClick={() => {
                                     setTitle('');
-                                    setIsPublished(false);
                                 }}
                             >
                                 ยกเลิก

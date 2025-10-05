@@ -1,7 +1,10 @@
 import { PublicCourseView } from "@/components/public-course-view";
+import { AllActivities } from "@/components/all-activities";
 import { ModeToggle } from "@/components/dark-mode";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Calendar, Briefcase } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -43,7 +46,7 @@ export default function Home() {
                 </div>
 
                 <Tabs defaultValue="bachelor" className="w-full">
-                    <TabsList className="grid w-full grid-cols-1 sm:grid-cols-2 gap-1 sm:gap-0 h-auto mb-6">
+                    <TabsList className="grid w-full grid-cols-1 sm:grid-cols-3 gap-1 sm:gap-0 h-auto mb-6">
                         <TabsTrigger
                             value="bachelor"
                             className="py-3 sm:py-2"
@@ -56,6 +59,12 @@ export default function Home() {
                         >
                             ประกาศนียบัตรวิชาชีพชั้นสูง (ปวส.)
                         </TabsTrigger>
+                        <TabsTrigger
+                            value="activities"
+                            className="py-3 sm:py-2"
+                        >
+                            กิจกรรมหลักสูตร
+                        </TabsTrigger>
                     </TabsList>
                     <TabsContent value="bachelor" className="mt-6">
                         <PublicCourseView courseType="bachelor" />
@@ -63,17 +72,78 @@ export default function Home() {
                     <TabsContent value="diploma" className="mt-6">
                         <PublicCourseView courseType="diploma" />
                     </TabsContent>
+                    <TabsContent value="activities" className="mt-6">
+                        <AllActivities />
+                    </TabsContent>
                 </Tabs>
-            </main>
 
-            {/* Footer */}
-            <footer className="border-t bg-muted/50 mt-16">
-                <div className="container mx-auto px-4 py-8">
-                    <div className="text-center text-sm text-muted-foreground">
-                        <p>© 2025 มหาวิทยาลัยเทคโนโลยีราชมงคลล้านนา ตาก - ระบบจัดการหลักสูตรคอมพิวเตอร์</p>
-                    </div>
+                {/* Important Information Section */}
+                <div className="mt-16 grid gap-6 lg:grid-cols-2">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className="flex items-center gap-2">
+                                <Briefcase className="h-5 w-5 text-orange-600" />
+                                อาชีพหลังจบการศึกษา
+                            </CardTitle>
+                            <CardDescription>โอกาสในการทำงานที่หลากหลาย</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="space-y-3">
+                                <div className="flex items-center gap-2">
+                                    <div className="w-2 h-2 rounded-full bg-blue-500"></div>
+                                    <span className="text-sm">นักพัฒนาซอฟต์แวร์ (Software Developer)</span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                    <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                                    <span className="text-sm">นักวิเคราะห์ระบบ (System Analyst)</span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                    <div className="w-2 h-2 rounded-full bg-purple-500"></div>
+                                    <span className="text-sm">ผู้จัดการโครงการ IT (IT Project Manager)</span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                    <div className="w-2 h-2 rounded-full bg-orange-500"></div>
+                                    <span className="text-sm">ผู้ประกอบการด้านเทคโนโลยี</span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                    <div className="w-2 h-2 rounded-full bg-red-500"></div>
+                                    <span className="text-sm">นักวิเคราะห์ข้อมูล (Data Analyst)</span>
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
+
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className="flex items-center gap-2">
+                                <Calendar className="h-5 w-5 text-indigo-600" />
+                                ข้อมูลสำคัญ
+                            </CardTitle>
+                            <CardDescription>ข้อมูลทั่วไปของหลักสูตร</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="space-y-3 text-sm">
+                                <div>
+                                    <p className="font-medium">คณะวิทยาศาสตร์และเทคโนโลยี</p>
+                                    <p className="text-muted-foreground">มหาวิทยาลัยเทคโนโลยีราชมงคลล้านนา ตาก</p>
+                                </div>
+                                <div>
+                                    <p className="font-medium">หลักสูตร</p>
+                                    <p className="text-muted-foreground">วิทยาศาสตรบัณฑิต สาขาคอมพิวเตอร์ธุรกิจ</p>
+                                </div>
+                                <div>
+                                    <p className="font-medium">ระดับการศึกษา</p>
+                                    <p className="text-muted-foreground">ปริญญาตรี (ป.ตรี) และ ประกาศนียบัตรวิชาชีพชั้นสูง (ปวส.)</p>
+                                </div>
+                                <div>
+                                    <p className="font-medium">ระยะเวลาศึกษา</p>
+                                    <p className="text-muted-foreground">ป.ตรี: 4 ปี, ปวส.: 2 ปี</p>
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
                 </div>
-            </footer>
+            </main>
         </div>
     );
 }

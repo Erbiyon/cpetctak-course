@@ -4,7 +4,7 @@ import { prisma } from '@/lib/prisma';
 export async function POST(request: NextRequest) {
     try {
         const body = await request.json();
-        const { title, isPublished } = body;
+        const { title } = body;
 
         if (!title) {
             return NextResponse.json(
@@ -16,7 +16,6 @@ export async function POST(request: NextRequest) {
         const activity = await prisma.activity.create({
             data: {
                 title,
-                isPublished: isPublished || false,
             },
         });
 
@@ -33,6 +32,14 @@ export async function POST(request: NextRequest) {
 export async function GET() {
     try {
         const activities = await prisma.activity.findMany({
+            include: {
+                blogs: {
+                    select: {
+                        id: true,
+                        isPublished: true,
+                    },
+                },
+            },
             orderBy: {
                 createdAt: 'desc',
             },

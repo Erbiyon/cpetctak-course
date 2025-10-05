@@ -21,9 +21,12 @@ import { toast } from "sonner";
 interface Activity {
     id: number;
     title: string;
-    isPublished: boolean;
     createdAt: string;
     updatedAt: string;
+    blogs: {
+        id: number;
+        isPublished: boolean;
+    }[];
 }
 
 interface EditActivityCourseProps {
@@ -41,7 +44,9 @@ export default function EditActivityCourse({ activity, onActivityUpdated }: Edit
     useEffect(() => {
         if (isOpen && activity) {
             setTitle(activity.title);
-            setIsPublished(activity.isPublished);
+            // Check if any blog is published
+            const hasPublishedBlog = activity.blogs.some(blog => blog.isPublished);
+            setIsPublished(hasPublishedBlog);
         }
     }, [isOpen, activity]);
 
@@ -56,27 +61,48 @@ export default function EditActivityCourse({ activity, onActivityUpdated }: Edit
         setIsLoading(true);
 
         try {
-            const response = await fetch(`/api/activities/${activity.id}`, {
+            // Update activity title
+            const activityResponse = await fetch(`/api/activities/${activity.id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
                     title: title.trim(),
-                    isPublished,
                 }),
             });
 
-            if (response.ok) {
-                toast.success('แก้ไขกิจกรรมเรียบร้อยแล้ว');
-                setIsOpen(false);
-                // Call callback if provided
-                if (onActivityUpdated) {
-                    onActivityUpdated();
+            if (!activityResponse.ok) {
+                throw new Error('Failed to update activity');
+            }
+
+            // Update blogs publication status if there are any blogs
+            if (activity.blogs.length > 0) {
+                const updatePromises = activity.blogs.map(blog =>
+                    fetch(`/api/activity-blogs/${blog.id}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            isPublished: isPublished,
+                        }),
+                    })
+                );
+
+                const blogResponses = await Promise.all(updatePromises);
+                const failedUpdates = blogResponses.filter(response => !response.ok);
+
+                if (failedUpdates.length > 0) {
+                    console.warn('Some blog updates failed');
                 }
-            } else {
-                const errorData = await response.json();
-                toast.error(errorData.error || 'เกิดข้อผิดพลาดในการแก้ไขข้อมูล');
+            }
+
+            toast.success('แก้ไขกิจกรรมเรียบร้อยแล้ว');
+            setIsOpen(false);
+            // Call callback if provided
+            if (onActivityUpdated) {
+                onActivityUpdated();
             }
         } catch (error) {
             console.error('Error updating activity:', error);
@@ -136,9 +162,9 @@ export default function EditActivityCourse({ activity, onActivityUpdated }: Edit
                                     <Checkbox
                                         id="edit-status-published"
                                         checked={isPublished}
-                                        onCheckedChange={(checked) => setIsPublished(checked as boolean)}
+                                        onCheckedChange={(checked) => setIsPublished(checked === true)}
                                     />
-                                    <Label htmlFor="edit-status-published">เผยแพร่</Label>
+                                    <Label htmlFor="edit-status-published">เผยแพร่บล็อก</Label>
                                 </div>
                             </div>
                         </div>
@@ -151,7 +177,8 @@ export default function EditActivityCourse({ activity, onActivityUpdated }: Edit
                                 variant="outline"
                                 onClick={() => {
                                     setTitle(activity.title);
-                                    setIsPublished(activity.isPublished);
+                                    const hasPublishedBlog = activity.blogs.some(blog => blog.isPublished);
+                                    setIsPublished(hasPublishedBlog);
                                 }}
                             >
                                 ยกเลิก

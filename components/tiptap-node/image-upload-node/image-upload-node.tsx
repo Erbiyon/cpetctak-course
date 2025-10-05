@@ -7,6 +7,7 @@ import { Button } from "@/components/tiptap-ui-primitive/button"
 import { CloseIcon } from "@/components/tiptap-icons/close-icon"
 import "@/components/tiptap-node/image-upload-node/image-upload-node.scss"
 import { focusNextNode, isValidPosition } from "@/lib/tiptap-utils"
+import { toast } from "sonner"
 
 export interface FileItem {
   /**
@@ -88,8 +89,10 @@ function useFileUpload(options: UploadOptions) {
   const uploadFile = async (file: File): Promise<string | null> => {
     if (file.size > options.maxSize) {
       const error = new Error(
-        `File size exceeds maximum allowed (${options.maxSize / 1024 / 1024}MB)`
+        `ขนาดไฟล์เกินกว่าที่อนุญาตให้ใช้ (${options.maxSize / 1024 / 1024}MB)`
       )
+      toast.error(error.message)
+
       options.onError?.(error)
       return null
     }
@@ -423,11 +426,11 @@ const DropZoneContent: React.FC<{ maxSize: number; limit: number }> = ({
 
     <div className="tiptap-image-upload-content">
       <span className="tiptap-image-upload-text">
-        <em>Click to upload</em> or drag and drop
+        <em>คลิ๊กเพื่ออัพโหลด</em> หรือ <em>ลากและวางรูปภาพที่นี่</em>
       </span>
       <span className="tiptap-image-upload-subtext">
-        Maximum {limit} file{limit === 1 ? "" : "s"}, {maxSize / 1024 / 1024}MB
-        each.
+        สูงสุด {limit} ไฟล์{limit === 1 ? "" : ""}, {maxSize / 1024 / 1024}MB
+        ต่อไฟล์.
       </span>
     </div>
   </>

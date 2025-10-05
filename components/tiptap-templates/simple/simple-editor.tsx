@@ -73,20 +73,35 @@ import { handleImageUpload, MAX_FILE_SIZE } from "@/lib/tiptap-utils"
 // --- Styles ---
 import "@/components/tiptap-templates/simple/simple-editor.scss"
 
-import content from "@/components/tiptap-templates/simple/data/content.json"
-
 import { Button as ButtonCn } from "@/components/ui/button"
-import { ArrowBigLeft } from "lucide-react"
+import { ArrowBigLeft, Save } from "lucide-react"
 import Link from "next/link"
+import { useRouter, useParams } from "next/navigation"
+import { useState, useEffect } from "react"
+import { toast } from "sonner"
+import { Label } from "@/components/ui/label"
+import { Checkbox } from "@/components/ui/checkbox"
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from "@/components/ui/dialog"
 
 const MainToolbarContent = ({
     onHighlighterClick,
     onLinkClick,
+    onSave,
     isMobile,
+    isSaving,
 }: {
     onHighlighterClick: () => void
     onLinkClick: () => void
+    onSave: () => void
     isMobile: boolean
+    isSaving: boolean
 }) => {
     return (
         <>
@@ -147,6 +162,20 @@ const MainToolbarContent = ({
                 <ImageUploadButton text="Add" />
             </ToolbarGroup>
 
+            <ToolbarSeparator />
+
+            <ToolbarGroup>
+                <Button
+                    onClick={onSave}
+                    disabled={isSaving}
+                    data-style="ghost"
+                    aria-label="บันทึก"
+                >
+                    <Save className="tiptap-button-icon" />
+                    {isSaving ? 'กำลังบันทึก...' : 'บันทึก'}
+                </Button>
+            </ToolbarGroup>
+
             <Spacer />
 
             {isMobile && <ToolbarSeparator />}
@@ -187,13 +216,135 @@ const MobileToolbarContent = ({
     </>
 )
 
-export function SimpleEditor() {
+interface SimpleEditorProps {
+    mode?: 'create' | 'edit';
+    blogId?: number;
+    activityId?: number;
+    initialContent?: string;
+    activityTitle?: string;
+    isPublished?: boolean;
+}
+
+export function SimpleEditor({
+    mode = 'create',
+    blogId,
+    activityId: propActivityId,
+    initialContent = '',
+    activityTitle: propActivityTitle,
+    isPublished: propIsPublished = false
+}: SimpleEditorProps = {}) {
+    const router = useRouter()
+    const params = useParams()
+    const activityId = propActivityId?.toString() || (params.id as string)
+
     const isMobile = useIsMobile()
     const { height } = useWindowSize()
     const [mobileView, setMobileView] = React.useState<
         "main" | "highlighter" | "link"
     >("main")
     const toolbarRef = React.useRef<HTMLDivElement>(null)
+
+    // State for saving
+    const [isSaving, setIsSaving] = useState(false)
+    const [activity, setActivity] = useState<{ id: number; title: string } | null>(null)
+    const [isPublished, setIsPublished] = useState(propIsPublished)
+    const [showSaveDialog, setShowSaveDialog] = useState(false)
+
+    // Fetch activity data
+    useEffect(() => {
+        if (mode === 'edit' && propActivityTitle) {
+            // For edit mode, use provided activity title
+            setActivity({
+                id: parseInt(activityId),
+                title: propActivityTitle
+            });
+            return;
+        }
+
+        const fetchActivity = async () => {
+            try {
+                const response = await fetch(`/api/activities/${activityId}`)
+                if (response.ok) {
+                    const data = await response.json()
+                    setActivity(data)
+                }
+            } catch (error) {
+                console.error('Error fetching activity:', error)
+            }
+        }
+
+        if (activityId) {
+            fetchActivity()
+        }
+    }, [activityId, mode, propActivityTitle])
+
+    const handleSave = async () => {
+        if (!editor || !activity) return
+
+        // เปิด dialog เพื่อเลือกสถานะการเผยแพร่
+        setShowSaveDialog(true)
+    }
+
+    const confirmSave = async () => {
+        if (!editor || !activity) return
+
+        setIsSaving(true)
+
+        try {
+            const content = editor.getHTML()
+
+            if (mode === 'edit' && blogId) {
+                // Edit existing blog
+                const response = await fetch(`/api/activity-blogs/${blogId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        content,
+                        isPublished,
+                    }),
+                })
+
+                if (response.ok) {
+                    toast.success('แก้ไขบล็อกเรียบร้อยแล้ว')
+                    setShowSaveDialog(false)
+                    router.push('/activity-course')
+                } else {
+                    const errorData = await response.json()
+                    toast.error(errorData.error || 'เกิดข้อผิดพลาดในการแก้ไข')
+                }
+            } else {
+                // Create new blog
+                const response = await fetch('/api/activity-blogs', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        activityId: parseInt(activityId),
+                        title: activity.title, // ใช้ชื่อกิจกรรม
+                        content,
+                        isPublished,
+                    }),
+                })
+
+                if (response.ok) {
+                    toast.success('บันทึกบล็อกเรียบร้อยแล้ว')
+                    setShowSaveDialog(false)
+                    router.push('/activity-course')
+                } else {
+                    const errorData = await response.json()
+                    toast.error(errorData.error || 'เกิดข้อผิดพลาดในการบันทึก')
+                }
+            }
+        } catch (error) {
+            console.error('Error saving blog:', error)
+            toast.error('เกิดข้อผิดพลาดในการเชื่อมต่อกับเซิร์ฟเวอร์')
+        } finally {
+            setIsSaving(false)
+        }
+    }
 
     const editor = useEditor({
         immediatelyRender: false,
@@ -233,7 +384,7 @@ export function SimpleEditor() {
                 onError: (error) => console.error("Upload failed:", error),
             }),
         ],
-        content,
+        content: initialContent, // ใช้ initial content หรือเริ่มต้นด้วยหน้าว่าง
     })
 
     const rect = useCursorVisibility({
@@ -252,6 +403,7 @@ export function SimpleEditor() {
             <EditorContext.Provider value={{ editor }}>
                 <Toolbar
                     ref={toolbarRef}
+                    className="mb-4"
                     style={{
                         ...(isMobile
                             ? {
@@ -264,7 +416,9 @@ export function SimpleEditor() {
                         <MainToolbarContent
                             onHighlighterClick={() => setMobileView("highlighter")}
                             onLinkClick={() => setMobileView("link")}
+                            onSave={handleSave}
                             isMobile={isMobile}
+                            isSaving={isSaving}
                         />
                     ) : (
                         <MobileToolbarContent
@@ -283,6 +437,47 @@ export function SimpleEditor() {
                     role="presentation"
                     className="simple-editor-content"
                 />
+
+                {/* Publish Status Dialog */}
+                <Dialog open={showSaveDialog} onOpenChange={setShowSaveDialog}>
+                    <DialogContent>
+                        <DialogHeader>
+                            <DialogTitle>
+                                {mode === 'edit' ? 'แก้ไขบล็อกกิจกรรม' : 'บันทึกบล็อกกิจกรรม'}
+                            </DialogTitle>
+                            <DialogDescription>
+                                {activity && `บล็อกสำหรับกิจกรรม: ${activity.title}`}
+                            </DialogDescription>
+                        </DialogHeader>
+                        <div className="flex flex-col gap-4">
+                            <div className="flex items-center space-x-2">
+                                <Checkbox
+                                    id="publish-status"
+                                    checked={isPublished}
+                                    onCheckedChange={(checked) => setIsPublished(checked as boolean)}
+                                />
+                                <Label htmlFor="publish-status">เผยแพร่ทันที</Label>
+                            </div>
+                        </div>
+                        <DialogFooter>
+                            <ButtonCn
+                                variant="outline"
+                                onClick={() => setShowSaveDialog(false)}
+                            >
+                                ยกเลิก
+                            </ButtonCn>
+                            <ButtonCn
+                                onClick={confirmSave}
+                                disabled={isSaving}
+                            >
+                                {isSaving
+                                    ? (mode === 'edit' ? 'กำลังแก้ไข...' : 'กำลังบันทึก...')
+                                    : (mode === 'edit' ? 'แก้ไข' : 'บันทึก')
+                                }
+                            </ButtonCn>
+                        </DialogFooter>
+                    </DialogContent>
+                </Dialog>
             </EditorContext.Provider>
         </div>
     )

@@ -43,9 +43,33 @@ model SubjectPrereq {
 }
 
 model Activity {
-    id          Int      @id @default(autoincrement())
+    id        Int            @id @default(autoincrement())
+    title     String
+    createdAt DateTime       @default(now())
+    updatedAt DateTime       @updatedAt
+    blogs     ActivityBlog[]
+}
+
+model ActivityBlog {
+    id          Int             @id @default(autoincrement())
+    activityId  Int
     title       String
-    isPublished Boolean  @default(false)
-    createdAt   DateTime @default(now())
-    updatedAt   DateTime @updatedAt
+    content     String          @db.Text
+    isPublished Boolean         @default(false)
+    createdAt   DateTime        @default(now())
+    updatedAt   DateTime        @updatedAt
+    activity    Activity        @relation(fields: [activityId], references: [id], onDelete: Cascade)
+    images      ActivityImage[]
+}
+
+model ActivityImage {
+    id             Int          @id @default(autoincrement())
+    activityBlogId Int
+    filename       String
+    originalName   String
+    mimetype       String
+    size           Int
+    url            String
+    createdAt      DateTime     @default(now())
+    activityBlog   ActivityBlog @relation(fields: [activityBlogId], references: [id], onDelete: Cascade)
 }

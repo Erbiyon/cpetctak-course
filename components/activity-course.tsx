@@ -7,13 +7,19 @@ import EditActivityCourse from "./edit-activity-course";
 import AlertDeleteActivity from "./alert-delete-activity";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
+import { Button } from "./ui/button";
+import { Eye, PenTool } from "lucide-react";
+import Link from "next/link";
 
 interface Activity {
     id: number;
     title: string;
-    isPublished: boolean;
     createdAt: string;
     updatedAt: string;
+    blogs: {
+        id: number;
+        isPublished: boolean;
+    }[];
 }
 
 export default function ActivityCourse() {
@@ -121,18 +127,54 @@ export default function ActivityCourse() {
                                             })}
                                         </TableCell>
                                         <TableCell>
-                                            <span className={`px-2 py-1 rounded-full text-xs ${activity.isPublished
-                                                ? 'bg-green-100 text-green-800'
-                                                : 'bg-gray-100 text-gray-800'
-                                                }`}>
-                                                {activity.isPublished ? 'เผยแพร่แล้ว' : 'ร่าง'}
-                                            </span>
+                                            {(() => {
+                                                const publishedBlog = activity.blogs.find(blog => blog.isPublished);
+                                                const isPublished = !!publishedBlog;
+                                                return (
+                                                    <span className={`px-2 py-1 rounded-full text-xs ${isPublished
+                                                        ? 'bg-green-100 text-green-800'
+                                                        : 'bg-gray-100 text-gray-800'
+                                                        }`}>
+                                                        {isPublished ? 'เผยแพร่แล้ว' : 'ร่าง'}
+                                                    </span>
+                                                );
+                                            })()}
                                         </TableCell>
                                         <TableCell className="text-center space-x-2">
                                             <EditActivityCourse
                                                 activity={activity}
                                                 onActivityUpdated={fetchActivities}
                                             />
+                                            {(() => {
+                                                // Check if activity has any blogs
+                                                const hasBlog = activity.blogs && activity.blogs.length > 0;
+                                                const blogId = hasBlog ? activity.blogs[0].id : null;
+                                                const href = hasBlog
+                                                    ? `/edit-activity-blog/${blogId}`
+                                                    : `/add-activity-blog/${activity.id}`;
+                                                const title = hasBlog ? "แก้ไขบล็อก" : "เขียนบล็อก";
+
+                                                return (
+                                                    <Link href={href}>
+                                                        <Button
+                                                            variant="outline"
+                                                            size="sm"
+                                                            title={title}
+                                                        >
+                                                            <PenTool className="text-blue-400" />
+                                                        </Button>
+                                                    </Link>
+                                                );
+                                            })()}
+                                            <Link href={`/view-activity/${activity.id}`}>
+                                                <Button
+                                                    variant="outline"
+                                                    size="sm"
+                                                    title="ดูกิจกรรม"
+                                                >
+                                                    <Eye className="text-green-400" />
+                                                </Button>
+                                            </Link>
                                             <AlertDeleteActivity
                                                 activity={{
                                                     id: activity.id,
