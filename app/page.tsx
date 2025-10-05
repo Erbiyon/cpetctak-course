@@ -124,12 +124,12 @@ export default function Home() {
                         <CardContent>
                             <div className="space-y-3 text-sm">
                                 <div>
-                                    <p className="font-medium">คณะวิทยาศาสตร์และเทคโนโลยี</p>
+                                    <p className="font-medium">คณะวิศวกรรมศาสตร์</p>
                                     <p className="text-muted-foreground">มหาวิทยาลัยเทคโนโลยีราชมงคลล้านนา ตาก</p>
                                 </div>
                                 <div>
                                     <p className="font-medium">หลักสูตร</p>
-                                    <p className="text-muted-foreground">วิทยาศาสตรบัณฑิต สาขาคอมพิวเตอร์ธุรกิจ</p>
+                                    <p className="text-muted-foreground">วิศวกรรมศาสตรบัณฑิต สาขาวิศวกรรมคอมพิวเตอร์</p>
                                 </div>
                                 <div>
                                     <p className="font-medium">ระดับการศึกษา</p>
@@ -137,7 +137,7 @@ export default function Home() {
                                 </div>
                                 <div>
                                     <p className="font-medium">ระยะเวลาศึกษา</p>
-                                    <p className="text-muted-foreground">ป.ตรี: 4 ปี, ปวส.: 2 ปี</p>
+                                    <p className="text-muted-foreground">ป.ตรี: 4 ปี, เทียบโอน 2.5 ปี, ปวส.: 2 ปี</p>
                                 </div>
                             </div>
                         </CardContent>
