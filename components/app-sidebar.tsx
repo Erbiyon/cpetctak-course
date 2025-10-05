@@ -3,8 +3,6 @@
 import * as React from "react"
 import {
     BookOpen,
-    Calendar,
-    Briefcase,
     Home,
     Activity,
 } from "lucide-react"

@@ -103,7 +103,7 @@ export default function ViewActivityPage() {
                 </div>
                 <div className="text-center py-12">
                     <h2 className="text-2xl font-bold text-gray-600 dark:text-gray-400 mb-4">
-                        ยังไม่มีบล็อกสำหรับกิจกรรม "{activity.title}"
+                        ยังไม่มีบล็อกสำหรับกิจกรรม &quot;{activity.title}&quot;
                     </h2>
                     <p className="text-gray-500 dark:text-gray-400 mb-6">
                         เริ่มต้นสร้างบล็อกแรกสำหรับกิจกรรมนี้

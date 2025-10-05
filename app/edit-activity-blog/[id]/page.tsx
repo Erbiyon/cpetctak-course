@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { ArrowBigLeft, Save } from 'lucide-react';
 import { toast } from 'sonner';
 import { SimpleEditor } from '@/components/tiptap-templates/simple/simple-editor';
 

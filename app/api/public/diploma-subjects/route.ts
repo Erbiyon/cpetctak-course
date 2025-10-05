@@ -1,13 +1,5 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { Subject, SubjectDetail, SubjectPrereq } from '@prisma/client'
-
-type SubjectWithDetails = Subject & {
-    prereqs: (SubjectPrereq & {
-        prereq: Subject
-    })[]
-    detail: SubjectDetail | null
-}
 
 export async function GET() {
     try {

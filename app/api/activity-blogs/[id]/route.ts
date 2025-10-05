@@ -3,7 +3,7 @@ import { prisma } from '@/lib/prisma';
 
 export async function GET(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
         const { id: paramId } = await params;
@@ -47,7 +47,7 @@ export async function GET(
 
 export async function PUT(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
         const { id: paramId } = await params;
@@ -76,7 +76,7 @@ export async function PUT(
         }
 
         // Build update data object
-        const updateData: any = {};
+        const updateData: { title?: string; content?: string; isPublished?: boolean } = {};
         if (title !== undefined) updateData.title = title;
         if (content !== undefined) updateData.content = content;
         if (isPublished !== undefined) updateData.isPublished = isPublished;
@@ -99,7 +99,7 @@ export async function PUT(
 
 export async function DELETE(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
         const { id: paramId } = await params;

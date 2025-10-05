@@ -14,7 +14,6 @@ import { Button } from "./ui/button";
 import { FilePlus } from "lucide-react";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
-import { Checkbox } from "@/components/ui/checkbox"
 import { useState } from "react";
 import { toast } from "sonner";
 
