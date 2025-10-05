@@ -385,18 +385,18 @@ export const handleImageUpload = async (
 
     // Ensure URL works in both development and production
     let imageUrl = result.url
-    
+
     // Make sure URL is relative for Next.js static serving
     if (imageUrl.startsWith('/uploads/')) {
       console.log('Image uploaded successfully:', imageUrl)
       return imageUrl
     }
-    
+
     // If not starting with /uploads/, add it
     if (!imageUrl.startsWith('/')) {
       imageUrl = '/' + imageUrl
     }
-    
+
     console.log('Image uploaded successfully:', imageUrl)
     return imageUrl
   } catch (error) {
