@@ -6,6 +6,7 @@ import {
     Calendar,
     Briefcase,
     Home,
+    Activity,
 } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
@@ -35,23 +36,10 @@ const data = {
             items: [],
         },
         {
-            title: "ข่าวสารและการอัปเดต",
-            url: "#",
-            icon: Calendar,
-            items: [
-                {
-                    title: "ข่าวสาร",
-                    url: "#",
-                },
-                {
-                    title: "กิจกรรมต่างๆ",
-                    url: "#",
-                },
-                {
-                    title: "ประกาศสำคัญ",
-                    url: "#",
-                },
-            ],
+            title: "กิจกรรมหลักสูตร",
+            url: "/activity-course",
+            icon: Activity,
+            items: [],
         },
         {
             title: "อาชีพหลังจบ",
