@@ -98,7 +98,21 @@ function useFileUpload(options: UploadOptions) {
     }
 
     const abortController = new AbortController()
-    const fileId = crypto.randomUUID()
+
+    // Generate UUID compatible with all environments
+    const generateUUID = () => {
+      if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+        return crypto.randomUUID()
+      }
+      // Fallback UUID generation
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        const r = Math.random() * 16 | 0
+        const v = c === 'x' ? r : (r & 0x3 | 0x8)
+        return v.toString(16)
+      })
+    }
+
+    const fileId = generateUUID()
 
     const newFileItem: FileItem = {
       id: fileId,
