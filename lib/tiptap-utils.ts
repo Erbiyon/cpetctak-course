@@ -2,7 +2,7 @@ import type { Node as TiptapNode } from "@tiptap/pm/model"
 import { NodeSelection, Selection, TextSelection } from "@tiptap/pm/state"
 import type { Editor } from "@tiptap/react"
 
-export const MAX_FILE_SIZE = 2 * 1024 * 1024 // 2MB (ลดจาก 5MB เพื่อจำกัดขนาดรูป)
+export const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB (เพิ่มจาก 2MB เพื่อรองรับรูปขนาดใหญ่)
 
 /**
  * บีบอัดรูปภาพให้มีขนาดเหมาะสม
