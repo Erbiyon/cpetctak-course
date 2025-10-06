@@ -51,25 +51,21 @@ model Activity {
 }
 
 model ActivityBlog {
-    id          Int             @id @default(autoincrement())
+    id          Int      @id @default(autoincrement())
     activityId  Int
     title       String
-    content     String          @db.Text
-    isPublished Boolean         @default(false)
-    createdAt   DateTime        @default(now())
-    updatedAt   DateTime        @updatedAt
-    activity    Activity        @relation(fields: [activityId], references: [id], onDelete: Cascade)
-    images      ActivityImage[]
+    content     String   @db.Text
+    isPublished Boolean  @default(false)
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+    activity    Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
 }
 
-model ActivityImage {
-    id             Int          @id @default(autoincrement())
-    activityBlogId Int
-    filename       String
-    originalName   String
-    mimetype       String
-    size           Int
-    url            String
-    createdAt      DateTime     @default(now())
-    activityBlog   ActivityBlog @relation(fields: [activityBlogId], references: [id], onDelete: Cascade)
+model Faculty {
+    id        Int      @id @default(autoincrement())
+    firstName String
+    lastName  String
+    imageUrl  String?
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }

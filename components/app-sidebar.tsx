@@ -5,6 +5,7 @@ import {
     BookOpen,
     Home,
     Activity,
+    UserRound,
 } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
@@ -37,6 +38,12 @@ const data = {
             title: "กิจกรรมหลักสูตร",
             url: "/activity-course",
             icon: Activity,
+            items: [],
+        },
+        {
+            title: "บุคลากร",
+            url: "/faculty-course",
+            icon: UserRound,
             items: [],
         }
     ]

@@ -1,6 +1,7 @@
 import { PublicCourseView } from "@/components/public-course-view";
 import { AllActivities } from "@/components/all-activities";
 import { ModeToggle } from "@/components/dark-mode";
+import { CarouselPlugin } from "@/components/carousel-plugin";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -35,6 +36,21 @@ export default function Home() {
                     </div>
                 </div>
             </header>
+
+            {/* Activity Images Carousel */}
+            <section className="py-8">
+                <div className="container mx-auto px-4">
+                    <div className="text-center mb-6">
+                        <h3 className="text-xl font-semibold mb-2">รูปภาพกิจกรรมหลักสูตร</h3>
+                        <p className="text-sm text-muted-foreground">
+                            ภาพบรรยากาศจากกิจกรรมต่างๆ ของนักศึกษาหลักสูตรคอมพิวเตอร์
+                        </p>
+                    </div>
+                    <div className="flex justify-center">
+                        <CarouselPlugin />
+                    </div>
+                </div>
+            </section>
 
             {/* Main Content */}
             <main className="container mx-auto px-4 py-8">

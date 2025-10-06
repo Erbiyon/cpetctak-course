@@ -74,37 +74,16 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        // Save image info to database  
         // Use dynamic image API route to bypass static file caching
         const imageUrl = `/api/images/activity-blogs/${filename}`;
 
-        let savedImage = null;
-        if (activityBlogId && activityBlogId !== 'null') {
-            try {
-                savedImage = await prisma.activityImage.create({
-                    data: {
-                        activityBlogId: parseInt(activityBlogId),
-                        filename,
-                        originalName: file.name,
-                        mimetype: file.type,
-                        size: file.size,
-                        url: imageUrl,
-                    },
-                });
-                console.log(`Image saved to database with ID: ${savedImage.id}`);
-            } catch (dbError) {
-                console.error('Database save error:', dbError);
-                // File is already saved, just log the error
-                console.warn('File uploaded but not saved to database');
-            }
-        }
+        console.log(`Image uploaded successfully: ${filename}`);
 
         return NextResponse.json({
             url: imageUrl,
             filename,
             originalName: file.name,
             size: file.size,
-            id: savedImage?.id || null,
             message: 'อัปโหลดไฟล์สำเร็จ'
         });
 
