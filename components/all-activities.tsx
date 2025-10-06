@@ -78,7 +78,7 @@ export function AllActivities() {
             <div className="text-center mb-8">
                 <h3 className="text-2xl font-bold mb-2">กิจกรรมทั้งหมด</h3>
                 <p className="text-muted-foreground">
-                    ติดตามกิจกรรมและความเคลื่อนไหวของหลักสูตรคอมพิวเตอร์ธุรกิจ
+                    ติดตามกิจกรรมและความเคลื่อนไหวของหลักสูตรคอมพิวเตอร์
                 </p>
                 <p className="text-sm text-muted-foreground mt-2">
                     พบกิจกรรม <span className="font-semibold text-primary">{blogs.length}</span> กิจกรรม
