@@ -69,7 +69,6 @@ export async function GET(request: NextRequest) {
             where,
             include: {
                 activity: true,
-                images: true,
             },
             orderBy: {
                 createdAt: 'desc',

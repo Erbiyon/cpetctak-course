@@ -9,13 +9,6 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Plus, Upload } from "lucide-react"
 import { toast } from "sonner"
 
-interface FacultyMember {
-    id: number
-    firstName: string
-    lastName: string
-    imageUrl?: string
-}
-
 export function AddFaculty({ onFacultyAdded }: { onFacultyAdded?: () => void }) {
     const [open, setOpen] = useState(false)
     const [formData, setFormData] = useState({

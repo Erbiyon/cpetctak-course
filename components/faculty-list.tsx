@@ -177,7 +177,7 @@ export const FacultyList = forwardRef<FacultyListRef>((props, ref) => {
                     <AlertDialogHeader>
                         <AlertDialogTitle>ยืนยันการลบ</AlertDialogTitle>
                         <AlertDialogDescription>
-                            คุณต้องการลบบุคลากร "{facultyToDelete?.firstName} {facultyToDelete?.lastName}" หรือไม่?
+                            คุณต้องการลบบุคลากร &ldquo;{facultyToDelete?.firstName} {facultyToDelete?.lastName}&rdquo; หรือไม่?
                             การดำเนินการนี้ไม่สามารถย้อนกลับได้
                         </AlertDialogDescription>
                     </AlertDialogHeader>
@@ -195,3 +195,5 @@ export const FacultyList = forwardRef<FacultyListRef>((props, ref) => {
         </>
     )
 })
+
+FacultyList.displayName = "FacultyList"

@@ -8,13 +8,11 @@ export async function GET() {
                 id: true,
                 firstName: true,
                 lastName: true,
-                position: true,
                 imageUrl: true
                 // ไม่ดึง createdAt, updatedAt เพื่อความปลอดภัย
             },
             orderBy: [
-                { position: 'asc' }, // เรียงตามตำแหน่ง
-                { lastName: 'asc' }   // แล้วเรียงตามนามสกุล
+                { lastName: 'asc' }   // เรียงตามนามสกุล
             ]
         })
 

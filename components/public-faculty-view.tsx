@@ -37,10 +37,6 @@ export function PublicFacultyView() {
         }
     }
 
-    const getInitials = (firstName: string, lastName: string) => {
-        return `${firstName.charAt(0)}${lastName.charAt(0)}`
-    }
-
     if (loading) {
         return (
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">

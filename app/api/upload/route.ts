@@ -1,14 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { writeFile, mkdir, access, constants } from 'fs/promises';
 import { join } from 'path';
-import { prisma } from '@/lib/prisma';
 import { existsSync } from 'fs';
 
 export async function POST(request: NextRequest) {
     try {
         const formData = await request.formData();
         const file = formData.get('file') as File;
-        const activityBlogId = formData.get('activityBlogId') as string;
 
         if (!file) {
             return NextResponse.json(
