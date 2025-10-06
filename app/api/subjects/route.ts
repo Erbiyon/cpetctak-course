@@ -9,11 +9,14 @@ type SubjectWithDetails = Subject & {
     detail: SubjectDetail | null
 }
 
-export async function GET() {
+export async function GET(request: Request) {
     try {
+        const { searchParams } = new URL(request.url)
+        const type = searchParams.get('type') || 'bachelor'
+
         const subjects = await prisma.subject.findMany({
             where: {
-                courseType: 'bachelor'
+                courseType: type
             },
             include: {
                 prereqs: {

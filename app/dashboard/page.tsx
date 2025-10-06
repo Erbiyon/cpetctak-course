@@ -42,25 +42,35 @@ export default function Dashboard() {
     useEffect(() => {
         const fetchStats = async () => {
             try {
-                // Fetch subjects count
-                const [bachelorRes, diplomaRes, activitiesRes, blogsRes] = await Promise.all([
-                    fetch('/api/subjects?type=bachelor'),
-                    fetch('/api/subjects?type=diploma'),
-                    fetch('/api/activity-course'),
-                    fetch('/api/public/activity-blogs')
-                ])
+                // Use the new stats API endpoint
+                const response = await fetch('/api/stats')
 
-                const bachelorData = await bachelorRes.json()
-                const diplomaData = await diplomaRes.json()
-                const activitiesData = await activitiesRes.json()
-                const blogsData = await blogsRes.json()
+                if (response.ok) {
+                    const data = await response.json()
+                    console.log('Stats data:', data)
+                    setStats(data)
+                } else {
+                    console.error('Failed to fetch stats:', response.status)
+                    // Fallback to original method
+                    const [bachelorRes, diplomaRes, activitiesRes, blogsRes] = await Promise.all([
+                        fetch('/api/subjects?type=bachelor'),
+                        fetch('/api/subjects?type=diploma'),
+                        fetch('/api/activity-course'),
+                        fetch('/api/public/activity-blogs')
+                    ])
 
-                setStats({
-                    bachelorSubjects: bachelorData.length || 0,
-                    diplomaSubjects: diplomaData.length || 0,
-                    activities: activitiesData.length || 0,
-                    publishedBlogs: blogsData.length || 0
-                })
+                    const bachelorData = bachelorRes.ok ? await bachelorRes.json() : []
+                    const diplomaData = diplomaRes.ok ? await diplomaRes.json() : []
+                    const activitiesData = activitiesRes.ok ? await activitiesRes.json() : []
+                    const blogsData = blogsRes.ok ? await blogsRes.json() : []
+
+                    setStats({
+                        bachelorSubjects: bachelorData.length || 0,
+                        diplomaSubjects: diplomaData.length || 0,
+                        activities: activitiesData.length || 0,
+                        publishedBlogs: blogsData.length || 0
+                    })
+                }
             } catch (error) {
                 console.error('Error fetching stats:', error)
             } finally {
