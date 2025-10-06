@@ -87,7 +87,7 @@ export function AllActivities() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {blogs.map((blog) => (
-                    <Card key={blog.id} className="group hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
+                    <Card key={blog.id} className="group hover:shadow-lg transition-all duration-300">
                         <CardHeader className="pb-3">
                             <div className="flex justify-between items-start mb-3">
                                 <Badge variant="secondary" className="bg-primary/10 text-primary hover:bg-primary/20">
@@ -111,9 +111,7 @@ export function AllActivities() {
                         </CardHeader>
                         <CardContent className="pt-0">
                             <div className="flex justify-between items-center">
-                                <div className="flex items-center text-xs text-muted-foreground">
-                                    <Clock className="h-3 w-3 mr-1" />
-                                    อ่าน 3-5 นาที
+                                <div>
                                 </div>
                                 <Link href={`/public/activity/${blog.activity.id}`}>
                                     <Button size="sm" className="group-hover:shadow-md transition-all duration-200">

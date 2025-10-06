@@ -1,5 +1,6 @@
 import { PublicCourseView } from "@/components/public-course-view";
 import { AllActivities } from "@/components/all-activities";
+import { PublicFacultyView } from "@/components/public-faculty-view";
 import { ModeToggle } from "@/components/dark-mode";
 import { CarouselPlugin } from "@/components/carousel-plugin";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -62,7 +63,7 @@ export default function Home() {
                 </div>
 
                 <Tabs defaultValue="bachelor" className="w-full">
-                    <TabsList className="grid w-full grid-cols-1 sm:grid-cols-3 gap-1 sm:gap-0 h-auto mb-6">
+                    <TabsList className="grid w-full grid-cols-1 sm:grid-cols-4 gap-1 sm:gap-0 h-auto mb-6">
                         <TabsTrigger
                             value="bachelor"
                             className="py-3 sm:py-2"
@@ -81,6 +82,12 @@ export default function Home() {
                         >
                             กิจกรรมหลักสูตร
                         </TabsTrigger>
+                        <TabsTrigger
+                            value="faculty"
+                            className="py-3 sm:py-2"
+                        >
+                            บุคลากร
+                        </TabsTrigger>
                     </TabsList>
                     <TabsContent value="bachelor" className="mt-6">
                         <PublicCourseView courseType="bachelor" />
@@ -90,6 +97,17 @@ export default function Home() {
                     </TabsContent>
                     <TabsContent value="activities" className="mt-6">
                         <AllActivities />
+                    </TabsContent>
+                    <TabsContent value="faculty" className="mt-6">
+                        <div className="space-y-6">
+                            <div className="text-center">
+                                <h3 className="text-xl font-semibold mb-2">บุคลากรหลักสูตร</h3>
+                                <p className="text-sm text-muted-foreground">
+                                    อาจารย์และบุคลากรประจำหลักสูตรคอมพิวเตอร์
+                                </p>
+                            </div>
+                            <PublicFacultyView />
+                        </div>
                     </TabsContent>
                 </Tabs>
 
