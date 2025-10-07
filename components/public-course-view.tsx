@@ -120,7 +120,7 @@ export function PublicCourseView({ courseType }: PublicBachelorCourseProps) {
                                 <TableHead>รหัสวิชา</TableHead>
                                 <TableHead>ชื่อวิชา</TableHead>
                                 <TableHead>วิชาบังคับก่อน</TableHead>
-                                <TableHead>หน่วยกิต</TableHead>
+                                <TableHead className="text-center">หน่วยกิต</TableHead>
                                 <TableHead className="text-center">รายละเอียด</TableHead>
                             </TableRow>
                         </TableHeader>

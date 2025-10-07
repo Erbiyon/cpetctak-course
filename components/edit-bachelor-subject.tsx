@@ -261,7 +261,7 @@ export default function EditBachelorSubject({ subject, onSubjectUpdated }: EditB
                                 <Command>
                                     <CommandInput placeholder="ค้นหารายวิชา..." />
                                     <CommandEmpty>ไม่พบรายวิชา</CommandEmpty>
-                                    <CommandGroup>
+                                    <CommandGroup className="max-h-[200px] overflow-y-auto">
                                         <CommandItem
                                             value="ไม่เลือก"
                                             onSelect={() => {
@@ -328,7 +328,7 @@ export default function EditBachelorSubject({ subject, onSubjectUpdated }: EditB
                                 <Command>
                                     <CommandInput placeholder="ค้นหารายวิชา..." />
                                     <CommandEmpty>ไม่พบรายวิชา</CommandEmpty>
-                                    <CommandGroup>
+                                    <CommandGroup className="max-h-[200px] overflow-y-auto">
                                         <CommandItem
                                             value="ไม่เลือก"
                                             onSelect={() => {
