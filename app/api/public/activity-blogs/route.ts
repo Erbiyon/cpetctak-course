@@ -22,7 +22,7 @@ export async function GET() {
 
         return NextResponse.json(publishedBlogs);
     } catch (error) {
-        console.error('Error fetching published blogs:', error);
+        console.error('เกิดข้อผิดพลาดในการดึงข้อมูลบล็อกกิจกรรม:', error);
         return NextResponse.json(
             { error: 'เกิดข้อผิดพลาดในการดึงข้อมูลกิจกรรม' },
             { status: 500 }

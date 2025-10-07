@@ -11,12 +11,11 @@ export async function DELETE(
 
         if (isNaN(facultyId)) {
             return NextResponse.json(
-                { error: 'Invalid faculty ID' },
+                { error: 'ID ไม่ถูกต้อง' },
                 { status: 400 }
             )
         }
 
-        // ตรวจสอบว่าบุคลากรมีอยู่หรือไม่
         const faculty = await prisma.faculty.findUnique({
             where: { id: facultyId }
         })
@@ -28,7 +27,6 @@ export async function DELETE(
             )
         }
 
-        // ลบบุคลากร
         await prisma.faculty.delete({
             where: { id: facultyId }
         })
@@ -38,9 +36,9 @@ export async function DELETE(
             deletedId: facultyId
         })
     } catch (error) {
-        console.error('Error deleting faculty:', error)
+        console.error('เกิดข้อผิดพลาดในการลบคณะ:', error)
         return NextResponse.json(
-            { error: 'Failed to delete faculty' },
+            { error: 'ไม่สามารถลบคณะได้' },
             { status: 500 }
         )
     }
@@ -58,7 +56,7 @@ export async function PUT(
 
         if (isNaN(facultyId)) {
             return NextResponse.json(
-                { error: 'Invalid faculty ID' },
+                { error: 'ID ไม่ถูกต้อง' },
                 { status: 400 }
             )
         }
@@ -70,7 +68,6 @@ export async function PUT(
             )
         }
 
-        // ตรวจสอบว่าบุคลากรมีอยู่หรือไม่
         const existingFaculty = await prisma.faculty.findUnique({
             where: { id: facultyId }
         })
@@ -82,7 +79,6 @@ export async function PUT(
             )
         }
 
-        // อัพเดตบุคลากร
         const updatedFaculty = await prisma.faculty.update({
             where: { id: facultyId },
             data: {
@@ -94,9 +90,9 @@ export async function PUT(
 
         return NextResponse.json(updatedFaculty)
     } catch (error) {
-        console.error('Error updating faculty:', error)
+        console.error('เกิดข้อผิดพลาดในการอัปเดตบุคลากร:', error)
         return NextResponse.json(
-            { error: 'Failed to update faculty' },
+            { error: 'ไม่สามารถอัปเดตบุคลากรได้' },
             { status: 500 }
         )
     }

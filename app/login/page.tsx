@@ -18,11 +18,9 @@ export default function LoginPage() {
     const [isCheckingAuth, setIsCheckingAuth] = useState(true);
     const router = useRouter();
 
-    // ข้อมูล login ที่ฝังไว้ในโค้ด
     const ADMIN_USERNAME = "admin";
     const ADMIN_PASSWORD = "admin123";
 
-    // ตรวจสอบว่า login แล้วหรือยัง
     useEffect(() => {
         const isLoggedIn = localStorage.getItem("isAdminLoggedIn");
         if (isLoggedIn === "true") {
@@ -37,16 +35,12 @@ export default function LoginPage() {
         setIsLoading(true);
         setError("");
 
-        // จำลองการ delay เหมือนการเรียก API
         await new Promise(resolve => setTimeout(resolve, 1000));
 
-        // ตรวจสอบ username และ password
         if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
-            // เก็บสถานะการ login ใน localStorage หรือ session
             localStorage.setItem("isAdminLoggedIn", "true");
             localStorage.setItem("adminUsername", username);
 
-            // redirect ไปหน้า dashboard
             router.push("/dashboard");
         } else {
             setError("ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง");
@@ -55,7 +49,6 @@ export default function LoginPage() {
         setIsLoading(false);
     };
 
-    // แสดง loading ขณะตรวจสอบการ authentication
     if (isCheckingAuth) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-background p-4">

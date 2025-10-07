@@ -15,7 +15,6 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        // Check file size (max 10MB)
         if (file.size > 10 * 1024 * 1024) {
             return NextResponse.json(
                 { error: 'ไฟล์มีขนาดใหญ่เกินไป (สูงสุด 10MB)' },
@@ -23,7 +22,6 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        // Check file type
         if (!file.type.startsWith('image/')) {
             return NextResponse.json(
                 { error: 'ไฟล์ต้องเป็นรูปภาพเท่านั้น' },
@@ -34,17 +32,14 @@ export async function POST(request: NextRequest) {
         const bytes = await file.arrayBuffer();
         const buffer = Buffer.from(bytes);
 
-        // Create uploads directory with proper error handling
         const uploadsDir = join(process.cwd(), 'public', 'uploads', 'activity-blogs');
 
         try {
-            // Check if directory exists, create if not
             if (!existsSync(uploadsDir)) {
                 await mkdir(uploadsDir, { recursive: true, mode: 0o755 });
                 console.log(`Created uploads directory: ${uploadsDir}`);
             }
 
-            // Test write permissions
             await access(uploadsDir, constants.W_OK);
         } catch (dirError) {
             console.error('Directory creation/permission error:', dirError);
@@ -54,28 +49,25 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        // Generate unique filename
         const timestamp = Date.now();
         const fileExtension = file.name.split('.').pop() || 'jpg';
         const filename = `${timestamp}-${Math.random().toString(36).substring(2)}.${fileExtension}`;
         const filepath = join(uploadsDir, filename);
 
-        // Write file to disk with error handling
         try {
             await writeFile(filepath, buffer, { mode: 0o644 });
-            console.log(`File saved successfully: ${filepath}`);
+            console.log(`บันทึกไฟล์สำเร็จแล้ว: ${filepath}`);
         } catch (writeError) {
-            console.error('File write error:', writeError);
+            console.error('เกิดข้อผิดพลาดในการบันทึกไฟล์:', writeError);
             return NextResponse.json(
                 { error: 'ไม่สามารถบันทึกไฟล์ได้ กรุณาตรวจสอบพื้นที่ดิสก์และสิทธิ์การเขียนไฟล์' },
                 { status: 500 }
             );
         }
 
-        // Use dynamic image API route to bypass static file caching
         const imageUrl = `/api/images/activity-blogs/${filename}`;
 
-        console.log(`Image uploaded successfully: ${filename}`);
+        console.log(`อัปโหลดรูปภาพสำเร็จ: ${filename}`);
 
         return NextResponse.json({
             url: imageUrl,
@@ -86,7 +78,7 @@ export async function POST(request: NextRequest) {
         });
 
     } catch (error) {
-        console.error('Error uploading file:', error);
+        console.error('เกิดข้อผิดพลาดในการอัปโหลดไฟล์:', error);
         return NextResponse.json(
             {
                 error: 'เกิดข้อผิดพลาดในการอัปโหลดไฟล์',

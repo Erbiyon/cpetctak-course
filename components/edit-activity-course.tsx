@@ -40,11 +40,11 @@ export default function EditActivityCourse({ activity, onActivityUpdated }: Edit
     const [isLoading, setIsLoading] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
 
-    // Initialize form with activity data when dialog opens
+
     useEffect(() => {
         if (isOpen && activity) {
             setTitle(activity.title);
-            // Check if any blog is published
+
             const hasPublishedBlog = activity.blogs.some(blog => blog.isPublished);
             setIsPublished(hasPublishedBlog);
         }
@@ -61,7 +61,7 @@ export default function EditActivityCourse({ activity, onActivityUpdated }: Edit
         setIsLoading(true);
 
         try {
-            // Update activity title
+
             const activityResponse = await fetch(`/api/activities/${activity.id}`, {
                 method: 'PUT',
                 headers: {
@@ -76,7 +76,7 @@ export default function EditActivityCourse({ activity, onActivityUpdated }: Edit
                 throw new Error('Failed to update activity');
             }
 
-            // Update blogs publication status if there are any blogs
+
             if (activity.blogs.length > 0) {
                 const updatePromises = activity.blogs.map(blog =>
                     fetch(`/api/activity-blogs/${blog.id}`, {
@@ -100,7 +100,7 @@ export default function EditActivityCourse({ activity, onActivityUpdated }: Edit
 
             toast.success('แก้ไขกิจกรรมเรียบร้อยแล้ว');
             setIsOpen(false);
-            // Call callback if provided
+
             if (onActivityUpdated) {
                 onActivityUpdated();
             }

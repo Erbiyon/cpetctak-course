@@ -42,16 +42,15 @@ export default function Dashboard() {
     useEffect(() => {
         const fetchStats = async () => {
             try {
-                // Use the new stats API endpoint
                 const response = await fetch('/api/stats')
 
                 if (response.ok) {
                     const data = await response.json()
-                    console.log('Stats data:', data)
+                    console.log('ข้อมูลสถานะ:', data)
                     setStats(data)
                 } else {
-                    console.error('Failed to fetch stats:', response.status)
-                    // Fallback to original method
+                    console.error('ไม่สามารถดึงข้อมูลสถานะได้:', response.status)
+
                     const [bachelorRes, diplomaRes, activitiesRes, blogsRes] = await Promise.all([
                         fetch('/api/subjects?type=bachelor'),
                         fetch('/api/subjects?type=diploma'),
@@ -99,7 +98,6 @@ export default function Dashboard() {
                         </div>
                     </header>
                     <div className="flex flex-1 flex-col gap-6 p-6 pt-0">
-                        {/* Welcome Banner */}
                         <div className="rounded-lg bg-gradient-to-r from-blue-600 to-blue-700 p-6 text-white shadow-lg">
                             <div className="flex items-center gap-4">
                                 <div className="rounded-full bg-white/20 p-3">
@@ -116,7 +114,6 @@ export default function Dashboard() {
                             </div>
                         </div>
 
-                        {/* Stats Overview */}
                         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                             <Card className="hover:shadow-md transition-shadow">
                                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -171,9 +168,7 @@ export default function Dashboard() {
                             </Card>
                         </div>
 
-                        {/* Main Content Grid */}
                         <div className="grid gap-6 lg:grid-cols-3">
-                            {/* Quick Actions */}
                             <Card className="lg:col-span-1">
                                 <CardHeader>
                                     <CardTitle className="flex items-center gap-2">
@@ -200,7 +195,6 @@ export default function Dashboard() {
                                 </CardContent>
                             </Card>
 
-                            {/* System Overview */}
                             <Card className="lg:col-span-2">
                                 <CardHeader>
                                     <CardTitle className="flex items-center gap-2">
@@ -259,7 +253,6 @@ export default function Dashboard() {
                             </Card>
                         </div>
 
-                        {/* Additional Info */}
                         <div className="grid gap-6 lg:grid-cols-2">
                             <Card>
                                 <CardHeader>

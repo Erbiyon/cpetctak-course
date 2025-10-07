@@ -61,7 +61,7 @@ export function PublicCourseView({ courseType }: PublicBachelorCourseProps) {
     const [subjects, setSubjects] = useState<Subject[]>([])
     const [isLoading, setIsLoading] = useState(true)
 
-    // ดึงข้อมูลรายวิชาจาก Public API
+
     const fetchSubjects = useCallback(async () => {
         try {
             setIsLoading(true)
@@ -126,7 +126,7 @@ export function PublicCourseView({ courseType }: PublicBachelorCourseProps) {
                         </TableHeader>
                         <TableBody>
                             {isLoading ? (
-                                // Loading skeleton
+
                                 Array.from({ length: 5 }).map((_, index) => (
                                     <TableRow key={index}>
                                         <TableCell><Skeleton className="h-4 w-20" /></TableCell>

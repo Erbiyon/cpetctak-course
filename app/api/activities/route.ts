@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
 
         return NextResponse.json(activity, { status: 201 });
     } catch (error) {
-        console.error('Error creating activity:', error);
+        console.error('เกิดข้อผิดพลาดในการสร้างกิจกรรม:', error);
         return NextResponse.json(
             { error: 'เกิดข้อผิดพลาดในการสร้างกิจกรรม' },
             { status: 500 }
@@ -47,7 +47,7 @@ export async function GET() {
 
         return NextResponse.json(activities);
     } catch (error) {
-        console.error('Error fetching activities:', error);
+        console.error('เกิดข้อผิดพลาดในการดึงข้อมูลกิจกรรม:', error);
         return NextResponse.json(
             { error: 'เกิดข้อผิดพลาดในการดึงข้อมูลกิจกรรม' },
             { status: 500 }

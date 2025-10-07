@@ -23,7 +23,7 @@ export async function GET(
 
         return NextResponse.json({ success: true, subjectDetail })
     } catch (error) {
-        console.error('Error fetching diploma subject detail:', error)
+        console.error('เกิดข้อผิดพลาดในการดึงข้อมูลรายละเอียดวิชาประกาศนียบัตร:', error)
         return NextResponse.json(
             { success: false, error: 'ไม่สามารถดึงข้อมูลรายละเอียดรายวิชาได้' },
             { status: 500 }
@@ -48,7 +48,6 @@ export async function PUT(
             description
         } = body
 
-        // ตรวจสอบว่ารายละเอียดมีอยู่หรือไม่
         const existingDetail = await prisma.subjectDetail.findUnique({
             where: { id: parseInt(id) }
         })
@@ -60,7 +59,6 @@ export async function PUT(
             )
         }
 
-        // อัปเดตรายละเอียดรายวิชา
         const updatedDetail = await prisma.subjectDetail.update({
             where: { id: parseInt(id) },
             data: {
@@ -84,7 +82,7 @@ export async function PUT(
         })
 
     } catch (error) {
-        console.error('Error updating diploma subject detail:', error)
+        console.error('เกิดข้อผิดพลาดในการอัปเดตรายละเอียดวิชาประกาศนียบัตร:', error)
         return NextResponse.json(
             { success: false, error: 'ไม่สามารถอัปเดตรายละเอียดรายวิชาได้' },
             { status: 500 }
@@ -99,7 +97,6 @@ export async function DELETE(
     try {
         const { id } = await params
 
-        // ตรวจสอบว่ารายละเอียดมีอยู่หรือไม่
         const existingDetail = await prisma.subjectDetail.findUnique({
             where: { id: parseInt(id) }
         })
@@ -111,7 +108,6 @@ export async function DELETE(
             )
         }
 
-        // ลบรายละเอียดรายวิชา
         await prisma.subjectDetail.delete({
             where: { id: parseInt(id) }
         })
@@ -122,7 +118,7 @@ export async function DELETE(
         })
 
     } catch (error) {
-        console.error('Error deleting diploma subject detail:', error)
+        console.error('เกิดข้อผิดพลาดในการลบรายละเอียดวิชาประกาศนียบัตร:', error)
         return NextResponse.json(
             { success: false, error: 'ไม่สามารถลบรายละเอียดรายวิชาได้' },
             { status: 500 }

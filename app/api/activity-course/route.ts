@@ -11,9 +11,9 @@ export async function GET() {
 
         return NextResponse.json(activities)
     } catch (error) {
-        console.error('Error fetching activities:', error)
+        console.error('เกิดข้อผิดพลาดในการดึงข้อมูลกิจกรรม:', error)
         return NextResponse.json(
-            { error: 'Failed to fetch activities' },
+            { error: 'เกิดข้อผิดพลาดในการดึงข้อมูลกิจกรรม' },
             { status: 500 }
         )
     }
@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
 
         if (!title) {
             return NextResponse.json(
-                { error: 'Title is required' },
+                { error: 'ชื่อกิจกรรมเป็นข้อมูลที่จำเป็น' },
                 { status: 400 }
             )
         }
@@ -39,9 +39,9 @@ export async function POST(request: NextRequest) {
 
         return NextResponse.json(activity, { status: 201 })
     } catch (error) {
-        console.error('Error creating activity:', error)
+        console.error('เกิดข้อผิดพลาดในการสร้างกิจกรรม:', error)
         return NextResponse.json(
-            { error: 'Failed to create activity' },
+            { error: 'เกิดข้อผิดพลาดในการสร้างกิจกรรม' },
             { status: 500 }
         )
     }

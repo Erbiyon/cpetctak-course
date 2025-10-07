@@ -3,7 +3,6 @@ import { prisma } from '@/lib/prisma'
 
 export async function GET() {
     try {
-        // ดึงบทความที่ publish แล้วและมีรูปภาพใน content
         const publishedBlogs = await prisma.activityBlog.findMany({
             where: {
                 isPublished: true,
@@ -20,21 +19,18 @@ export async function GET() {
             take: 10
         })
 
-        console.log('Published blogs with images:', publishedBlogs.length)
+        console.log('บล็อกที่เผยแพร่พร้อมรูปภาพ:', publishedBlogs.length)
 
-        // สกัดรูปจาก HTML content
         const extractedImages = []
         let imageCount = 0
 
         for (const blog of publishedBlogs) {
-            // ใช้ regex หา img tags
             const imgRegex = /<img[^>]+src="([^"]+)"[^>]*>/g
             let match
 
             while ((match = imgRegex.exec(blog.content)) !== null && imageCount < 10) {
                 const imageUrl = match[1]
 
-                // ตรวจสอบว่าเป็นรูปจาก activity-blogs หรือไม่
                 if (imageUrl.includes('/api/images/activity-blogs/')) {
                     extractedImages.push({
                         id: `${blog.id}-${imageCount}`,
@@ -51,9 +47,8 @@ export async function GET() {
             }
         }
 
-        console.log('Extracted images from content:', extractedImages.length)
+        console.log('ภาพที่ดึงออกมาจากเนื้อหา:', extractedImages.length)
 
-        // ถ้าไม่มีรูปใน published blogs ให้ดึงจากบทความทั้งหมด
         if (extractedImages.length === 0) {
             const allBlogs = await prisma.activityBlog.findMany({
                 where: {
@@ -93,12 +88,12 @@ export async function GET() {
                 }
             }
 
-            console.log('Using images from all blogs:', extractedImages.length)
+            console.log('การใช้รูปภาพจากบล็อกทั้งหมด:', extractedImages.length)
         }
 
         return NextResponse.json(extractedImages)
     } catch (error) {
-        console.error('Error fetching activity images:', error)
+        console.error('เกิดข้อผิดพลาดในการดึงข้อมูลรูปภาพกิจกรรม:', error)
         return NextResponse.json([], { status: 200 })
     }
 }

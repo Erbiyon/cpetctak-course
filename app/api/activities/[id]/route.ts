@@ -62,7 +62,6 @@ export async function PUT(
             );
         }
 
-        // Check if activity exists
         const existingActivity = await prisma.activity.findUnique({
             where: { id }
         });
@@ -74,7 +73,6 @@ export async function PUT(
             );
         }
 
-        // Update the activity
         const updatedActivity = await prisma.activity.update({
             where: { id },
             data: {
@@ -84,7 +82,7 @@ export async function PUT(
 
         return NextResponse.json(updatedActivity);
     } catch (error) {
-        console.error('Error updating activity:', error);
+        console.error('เกิดข้อผิดพลาดในการแก้ไขกิจกรรม:', error);
         return NextResponse.json(
             { error: 'เกิดข้อผิดพลาดในการแก้ไขกิจกรรม' },
             { status: 500 }
@@ -107,7 +105,6 @@ export async function DELETE(
             );
         }
 
-        // Check if activity exists
         const activity = await prisma.activity.findUnique({
             where: { id }
         });
@@ -119,14 +116,13 @@ export async function DELETE(
             );
         }
 
-        // Delete the activity
         await prisma.activity.delete({
             where: { id }
         });
 
         return NextResponse.json({ message: 'ลบกิจกรรมเรียบร้อยแล้ว' });
     } catch (error) {
-        console.error('Error deleting activity:', error);
+        console.error('เกิดข้อผิดพลาดในการลบกิจกรรม:', error);
         return NextResponse.json(
             { error: 'เกิดข้อผิดพลาดในการลบกิจกรรม' },
             { status: 500 }

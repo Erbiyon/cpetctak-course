@@ -44,7 +44,7 @@ export default function PublicActivityDetailPage() {
                     setBlog(null);
                 }
             } catch (error) {
-                console.error('Error fetching activity blog:', error);
+                console.error('เกิดข้อผิดพลาดในการดึงข้อมูลบล็อกกิจกรรม:', error);
                 setBlog(null);
             } finally {
                 setIsLoading(false);

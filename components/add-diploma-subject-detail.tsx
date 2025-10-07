@@ -58,7 +58,7 @@ export default function AddDiplomaSubjectDetail({ subjectId, onDetailAdded, hasD
     const [isOpen, setIsOpen] = useState(false)
     const [isEditMode, setIsEditMode] = useState(false)
 
-    // โหลดข้อมูลเดิมเมื่อเปิด dialog
+
     useEffect(() => {
         if (isOpen && subjectDetail) {
             setFormData({
@@ -72,7 +72,7 @@ export default function AddDiplomaSubjectDetail({ subjectId, onDetailAdded, hasD
             })
             setIsEditMode(hasDetail || false)
         } else if (isOpen && !hasDetail) {
-            // ถ้าไม่มีข้อมูลเดิม ให้เคลียร์ฟอร์ม
+
             setFormData({
                 theoryHours: "",
                 practicalHours: "",

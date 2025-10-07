@@ -73,7 +73,7 @@ export default function AddBachelorSubject({ onSubjectAdded }: AddBachelorSubjec
     const [isLoading, setIsLoading] = useState(false)
     const [isOpen, setIsOpen] = useState(false)
 
-    // ดึงข้อมูลรายวิชาทั้งหมดสำหรับ combobox
+
     useEffect(() => {
         const fetchSubjects = async () => {
             try {
@@ -97,7 +97,7 @@ export default function AddBachelorSubject({ onSubjectAdded }: AddBachelorSubjec
     }
 
     const handleSubmit = async () => {
-        // ตรวจสอบข้อมูลที่จำเป็น
+
         if (!formData.code || !formData.title || !formData.credits) {
             toast.error('กรุณากรอกรหัสวิชา ชื่อวิชา และหน่วยกิตให้ครบถ้วน')
             return
@@ -126,7 +126,7 @@ export default function AddBachelorSubject({ onSubjectAdded }: AddBachelorSubjec
 
             if (result.success) {
                 toast.success('เพิ่มรายวิชาเรียบร้อยแล้ว')
-                // รีเซ็ตฟอร์ม
+
                 setFormData({
                     groupName: "none",
                     code: "",
@@ -136,7 +136,7 @@ export default function AddBachelorSubject({ onSubjectAdded }: AddBachelorSubjec
                 setPrerequisite1("")
                 setPrerequisite2("")
                 setIsOpen(false)
-                // เรียก callback function เพื่อรีเฟรชข้อมูลใน parent component
+
                 if (onSubjectAdded) {
                     onSubjectAdded()
                 }
@@ -220,7 +220,7 @@ export default function AddBachelorSubject({ onSubjectAdded }: AddBachelorSubjec
                         />
                     </div>
 
-                    {/* วิชาบังคับก่อน 1 */}
+
                     <div className="flex flex-col gap-2">
                         <Label>วิชาบังคับก่อน 1</Label>
                         <Popover open={openPrereq1} onOpenChange={setOpenPrereq1}>
@@ -285,7 +285,7 @@ export default function AddBachelorSubject({ onSubjectAdded }: AddBachelorSubjec
                         </Popover>
                     </div>
 
-                    {/* วิชาบังคับก่อน 2 */}
+
                     <div className="flex flex-col gap-2">
                         <Label>วิชาบังคับก่อน 2</Label>
                         <Popover open={openPrereq2} onOpenChange={setOpenPrereq2}>
@@ -324,7 +324,7 @@ export default function AddBachelorSubject({ onSubjectAdded }: AddBachelorSubjec
                                             <span className="text-muted-foreground">ไม่เลือก</span>
                                         </CommandItem>
                                         {subjects
-                                            .filter(subject => subject.code !== prerequisite1) // ไม่ให้เลือกซ้ำกับวิชาบังคับก่อน 1
+                                            .filter(subject => subject.code !== prerequisite1)
                                             .map((subject) => (
                                                 <CommandItem
                                                     key={subject.id}

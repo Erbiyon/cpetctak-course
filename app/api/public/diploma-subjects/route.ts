@@ -25,9 +25,8 @@ export async function GET() {
             ]
         })
 
-        // จัดเรียงตามลำดับกลุ่มวิชาที่ต้องการ
         const groupOrder = {
-            '': 0, // ไม่เลือกจะแสดงข้างบน
+            '': 0,
             'พื้นฐานวิชาชีพ': 1,
             'ชีพบังคับ': 2,
             'ชีพเลือก': 3
@@ -42,20 +41,18 @@ export async function GET() {
             const aGroupOrder = groupOrder[a.groupName as keyof typeof groupOrder] || 999
             const bGroupOrder = groupOrder[b.groupName as keyof typeof groupOrder] || 999
 
-            // เรียงตามกลุ่มวิชาก่อน
             if (aGroupOrder !== bGroupOrder) {
                 return aGroupOrder - bGroupOrder
             }
 
-            // ถ้ากลุ่มวิชาเหมือนกัน จึงเรียงตามรหัสวิชา
             return a.code.localeCompare(b.code)
         })
 
         return NextResponse.json({ success: true, subjects: sortedSubjects })
     } catch (error) {
-        console.error('Error fetching public diploma subjects:', error)
+        console.error('เกิดข้อผิดพลาดในการดึงข้อมูลวิชาหลักสูตรประกาศนียบัตร:', error)
         return NextResponse.json(
-            { success: false, message: 'Failed to fetch diploma subjects' },
+            { success: false, message: 'ไม่สามารถรับวิชาประกาศนียบัตรได้' },
             { status: 500 }
         )
     }

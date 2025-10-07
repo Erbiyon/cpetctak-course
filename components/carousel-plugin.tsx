@@ -40,7 +40,7 @@ export function CarouselPlugin() {
                     throw new Error('Failed to fetch images')
                 }
                 const data = await response.json()
-                // ตรวจสอบว่าข้อมูลที่ได้เป็น array หรือไม่
+
                 if (Array.isArray(data)) {
                     setImages(data)
                 } else {

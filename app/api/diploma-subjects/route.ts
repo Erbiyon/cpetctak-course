@@ -33,9 +33,8 @@ export async function GET() {
             ]
         })
 
-        // จัดเรียงตามลำดับกลุ่มวิชาที่ต้องการ (สำหรับ ปวส.)
         const groupOrder = {
-            '': 0, // ไม่เลือกจะแสดงข้างบน
+            '': 0,
             'พื้นฐานวิชาชีพ': 1,
             'ชีพบังคับ': 2,
             'ชีพเลือก': 3
@@ -45,18 +44,16 @@ export async function GET() {
             const aGroupOrder = groupOrder[a.groupName as keyof typeof groupOrder] || 999
             const bGroupOrder = groupOrder[b.groupName as keyof typeof groupOrder] || 999
 
-            // เรียงตามกลุ่มวิชาก่อน
             if (aGroupOrder !== bGroupOrder) {
                 return aGroupOrder - bGroupOrder
             }
 
-            // ถ้ากลุ่มวิชาเหมือนกัน จึงเรียงตามรหัสวิชา
             return a.code.localeCompare(b.code)
         })
 
         return NextResponse.json({ success: true, subjects: sortedSubjects })
     } catch (error) {
-        console.error('Error fetching diploma subjects:', error)
+        console.error('เกิดข้อผิดพลาดในการดึงข้อมูลรายวิชาประกาศนียบัตร:', error)
         return NextResponse.json(
             { success: false, error: 'ไม่สามารถดึงข้อมูลรายวิชาได้' },
             { status: 500 }
@@ -69,7 +66,6 @@ export async function POST(request: Request) {
         const body = await request.json()
         const { groupName, code, title, credits, prerequisites } = body
 
-        // ตรวจสอบว่ารหัสวิชาซ้ำหรือไม่
         const existingSubject = await prisma.subject.findUnique({
             where: { code }
         })
@@ -81,7 +77,6 @@ export async function POST(request: Request) {
             )
         }
 
-        // สร้างรายวิชาใหม่
         const subject = await prisma.subject.create({
             data: {
                 courseType: 'diploma',
@@ -92,12 +87,10 @@ export async function POST(request: Request) {
             },
         })
 
-        // เพิ่มข้อมูลวิชาบังคับก่อน (ถ้ามี)
         if (prerequisites && prerequisites.length > 0) {
             const prereqCodes = prerequisites.filter((prereq: string) => prereq.trim() !== '')
 
             if (prereqCodes.length > 0) {
-                // หาวิชาบังคับก่อนที่มีอยู่ในฐานข้อมูล (เฉพาะ diploma course)
                 const existingPrereqs = await prisma.subject.findMany({
                     where: {
                         courseType: 'diploma',
@@ -107,7 +100,6 @@ export async function POST(request: Request) {
                     }
                 })
 
-                // สร้างความสัมพันธ์วิชาบังคับก่อน
                 const prereqRelations = existingPrereqs.map(prereq => ({
                     subjectId: subject.id,
                     prereqId: prereq.id,
@@ -128,7 +120,7 @@ export async function POST(request: Request) {
         })
 
     } catch (error) {
-        console.error('Error creating diploma subject:', error)
+        console.error('เกิดข้อผิดพลาดในการสร้างรายวิชาประกาศนียบัตร:', error)
         return NextResponse.json(
             { success: false, error: 'ไม่สามารถเพิ่มรายวิชาได้' },
             { status: 500 }

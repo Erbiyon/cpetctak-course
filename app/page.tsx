@@ -13,7 +13,6 @@ import Image from "next/image";
 export default function Home() {
     return (
         <div className="min-h-screen bg-background">
-            {/* Header */}
             <header className="border-b">
                 <div className="container mx-auto px-4 py-4 flex justify-between items-center">
                     <div className="flex items-center gap-4">
@@ -38,7 +37,6 @@ export default function Home() {
                 </div>
             </header>
 
-            {/* Activity Images Carousel */}
             <section className="py-8">
                 <div className="container mx-auto px-4">
                     <div className="text-center mb-6">
@@ -53,7 +51,6 @@ export default function Home() {
                 </div>
             </section>
 
-            {/* Main Content */}
             <main className="container mx-auto px-4 py-8">
                 <div className="mb-8 text-center">
                     <h2 className="text-3xl font-bold mb-2">หลักสูตรคอมพิวเตอร์</h2>
@@ -111,7 +108,6 @@ export default function Home() {
                     </TabsContent>
                 </Tabs>
 
-                {/* Important Information Section */}
                 <div className="mt-16 grid gap-6 lg:grid-cols-2">
                     <Card>
                         <CardHeader>

@@ -80,7 +80,7 @@ export default function EditDiplomaSubject({ subject, onSubjectUpdated }: EditDi
     const [isLoading, setIsLoading] = useState(false)
     const [isOpen, setIsOpen] = useState(false)
 
-    // ดึงข้อมูลรายวิชาทั้งหมดสำหรับ combobox
+
     useEffect(() => {
         const fetchSubjects = async () => {
             try {
@@ -96,7 +96,7 @@ export default function EditDiplomaSubject({ subject, onSubjectUpdated }: EditDi
         fetchSubjects()
     }, [])
 
-    // ตั้งค่าข้อมูลเริ่มต้นเมื่อมีข้อมูล subject
+
     useEffect(() => {
         if (subject) {
             setFormData({
@@ -105,7 +105,7 @@ export default function EditDiplomaSubject({ subject, onSubjectUpdated }: EditDi
                 title: subject.title,
                 credits: subject.credits.toString()
             })
-            // ตั้งค่าวิชาบังคับก่อน
+
             if (subject.prereqs.length > 0) {
                 setPrerequisite1(subject.prereqs[0]?.prereq.code || "")
                 setPrerequisite2(subject.prereqs[1]?.prereq.code || "")
@@ -121,7 +121,7 @@ export default function EditDiplomaSubject({ subject, onSubjectUpdated }: EditDi
     }
 
     const handleSubmit = async () => {
-        // ตรวจสอบข้อมูลที่จำเป็น
+
         if (!formData.code || !formData.title || !formData.credits) {
             toast.error('กรุณากรอกรหัสวิชา ชื่อวิชา และหน่วยกิตให้ครบถ้วน')
             return
@@ -156,7 +156,7 @@ export default function EditDiplomaSubject({ subject, onSubjectUpdated }: EditDi
             if (result.success) {
                 toast.success('แก้ไขรายวิชาเรียบร้อยแล้ว')
                 setIsOpen(false)
-                // เรียก callback function เพื่อรีเฟรชข้อมูลใน parent component
+
                 if (onSubjectUpdated) {
                     onSubjectUpdated()
                 }
@@ -241,7 +241,7 @@ export default function EditDiplomaSubject({ subject, onSubjectUpdated }: EditDi
                         />
                     </div>
 
-                    {/* วิชาบังคับก่อน 1 */}
+
                     <div className="flex flex-col gap-2">
                         <Label>วิชาบังคับก่อน 1</Label>
                         <Popover open={openPrereq1} onOpenChange={setOpenPrereq1}>
@@ -280,7 +280,7 @@ export default function EditDiplomaSubject({ subject, onSubjectUpdated }: EditDi
                                             <span className="text-muted-foreground">ไม่เลือก</span>
                                         </CommandItem>
                                         {subjects
-                                            .filter(subj => subj.code !== formData.code) // ไม่ให้เลือกตัวเอง
+                                            .filter(subj => subj.code !== formData.code)
                                             .map((subj) => (
                                                 <CommandItem
                                                     key={subj.id}
@@ -308,7 +308,7 @@ export default function EditDiplomaSubject({ subject, onSubjectUpdated }: EditDi
                         </Popover>
                     </div>
 
-                    {/* วิชาบังคับก่อน 2 */}
+
                     <div className="flex flex-col gap-2">
                         <Label>วิชาบังคับก่อน 2</Label>
                         <Popover open={openPrereq2} onOpenChange={setOpenPrereq2}>
@@ -347,7 +347,7 @@ export default function EditDiplomaSubject({ subject, onSubjectUpdated }: EditDi
                                             <span className="text-muted-foreground">ไม่เลือก</span>
                                         </CommandItem>
                                         {subjects
-                                            .filter(subj => subj.code !== formData.code && subj.code !== prerequisite1) // ไม่ให้เลือกตัวเองและวิชาบังคับก่อน 1
+                                            .filter(subj => subj.code !== formData.code && subj.code !== prerequisite1)
                                             .map((subj) => (
                                                 <CommandItem
                                                     key={subj.id}

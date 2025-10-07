@@ -21,7 +21,7 @@ export function AddFaculty({ onFacultyAdded }: { onFacultyAdded?: () => void }) 
     const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0]
         if (file) {
-            // สร้าง preview
+
             const reader = new FileReader()
             reader.onload = (e) => {
                 setImagePreview(e.target?.result as string)
@@ -92,7 +92,7 @@ export function AddFaculty({ onFacultyAdded }: { onFacultyAdded?: () => void }) 
                 </DialogHeader>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
-                    {/* รูปภาพ */}
+
                     <div className="flex flex-col items-center space-y-2">
                         <Avatar className="w-24 h-24">
                             <AvatarImage
@@ -118,7 +118,7 @@ export function AddFaculty({ onFacultyAdded }: { onFacultyAdded?: () => void }) 
                         />
                     </div>
 
-                    {/* ชื่อ */}
+
                     <div className="space-y-2">
                         <Label htmlFor="firstName">ชื่อ</Label>
                         <Input
@@ -130,7 +130,7 @@ export function AddFaculty({ onFacultyAdded }: { onFacultyAdded?: () => void }) 
                         />
                     </div>
 
-                    {/* นามสกุล */}
+
                     <div className="space-y-2">
                         <Label htmlFor="lastName">นามสกุล</Label>
                         <Input
@@ -142,7 +142,7 @@ export function AddFaculty({ onFacultyAdded }: { onFacultyAdded?: () => void }) 
                         />
                     </div>
 
-                    {/* ปุ่ม */}
+
                     <div className="flex gap-2 pt-4">
                         <Button
                             type="button"

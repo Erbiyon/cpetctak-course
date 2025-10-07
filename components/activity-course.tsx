@@ -54,7 +54,7 @@ export default function ActivityCourse() {
 
             if (response.ok) {
                 toast.success('ลบกิจกรรมเรียบร้อยแล้ว');
-                fetchActivities(); // Refresh the list
+                fetchActivities();
             } else {
                 toast.error('เกิดข้อผิดพลาดในการลบกิจกรรม');
             }
@@ -146,7 +146,7 @@ export default function ActivityCourse() {
                                                 onActivityUpdated={fetchActivities}
                                             />
                                             {(() => {
-                                                // Check if activity has any blogs
+
                                                 const hasBlog = activity.blogs && activity.blogs.length > 0;
                                                 const blogId = hasBlog ? activity.blogs[0].id : null;
                                                 const href = hasBlog

@@ -11,7 +11,6 @@ export async function PUT(
         const body = await request.json()
         const { groupName, code, title, credits, prerequisites } = body
 
-        // ตรวจสอบว่ารหัสวิชาซ้ำหรือไม่ (ยกเว้นตัวเอง)
         const existingSubject = await prisma.subject.findFirst({
             where: {
                 code,
@@ -26,12 +25,10 @@ export async function PUT(
             )
         }
 
-        // ลบวิชาบังคับก่อนเดิมทั้งหมด
         await prisma.subjectPrereq.deleteMany({
             where: { subjectId: id }
         })
 
-        // อัพเดตข้อมูลรายวิชา
         const subject = await prisma.subject.update({
             where: { id },
             data: {
@@ -42,12 +39,10 @@ export async function PUT(
             },
         })
 
-        // เพิ่มข้อมูลวิชาบังคับก่อนใหม่ (ถ้ามี)
         if (prerequisites && prerequisites.length > 0) {
             const prereqCodes = prerequisites.filter((prereq: string) => prereq.trim() !== '')
 
             if (prereqCodes.length > 0) {
-                // หาวิชาบังคับก่อนที่มีอยู่ในฐานข้อมูล
                 const existingPrereqs = await prisma.subject.findMany({
                     where: {
                         code: {
@@ -56,7 +51,6 @@ export async function PUT(
                     }
                 })
 
-                // สร้างความสัมพันธ์วิชาบังคับก่อน
                 const prereqRelations = existingPrereqs.map(prereq => ({
                     subjectId: subject.id,
                     prereqId: prereq.id,
@@ -77,7 +71,7 @@ export async function PUT(
         })
 
     } catch (error) {
-        console.error('Error updating subject:', error)
+        console.error('เกิดข้อผิดพลาดในการอัปเดตรายวิชา:', error)
         return NextResponse.json(
             { success: false, error: 'ไม่สามารถแก้ไขรายวิชาได้' },
             { status: 500 }
@@ -93,7 +87,6 @@ export async function DELETE(
         const { id: idParam } = await params
         const id = parseInt(idParam)
 
-        // ลบวิชาบังคับก่อนที่เกี่ยวข้อง
         await prisma.subjectPrereq.deleteMany({
             where: {
                 OR: [
@@ -103,7 +96,6 @@ export async function DELETE(
             }
         })
 
-        // ลบรายวิชา
         await prisma.subject.delete({
             where: { id }
         })
@@ -114,7 +106,7 @@ export async function DELETE(
         })
 
     } catch (error) {
-        console.error('Error deleting subject:', error)
+        console.error('เกิดข้อผิดพลาดในการลบรายวิชา:', error)
         return NextResponse.json(
             { success: false, error: 'ไม่สามารถลบรายวิชาได้' },
             { status: 500 }

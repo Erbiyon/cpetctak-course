@@ -16,7 +16,6 @@ export async function GET(
             );
         }
 
-        // ดึงบล็อกที่เผยแพร่แล้วของกิจกรรมนี้
         const blog = await prisma.activityBlog.findFirst({
             where: {
                 activityId: activityId,
@@ -41,7 +40,7 @@ export async function GET(
 
         return NextResponse.json(blog);
     } catch (error) {
-        console.error('Error fetching published activity blog:', error);
+        console.error('เกิดข้อผิดพลาดในการดึงข้อมูลกิจกรรม:', error);
         return NextResponse.json(
             { error: 'เกิดข้อผิดพลาดในการดึงข้อมูลกิจกรรม' },
             { status: 500 }

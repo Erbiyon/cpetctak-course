@@ -114,7 +114,7 @@ export function EditFacultyDialog({ faculty, open, onOpenChange, onFacultyUpdate
                 </DialogHeader>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
-                    {/* รูปภาพ */}
+
                     <div className="flex flex-col items-center space-y-2">
                         <Avatar className="w-24 h-24">
                             <AvatarImage
@@ -140,7 +140,7 @@ export function EditFacultyDialog({ faculty, open, onOpenChange, onFacultyUpdate
                         />
                     </div>
 
-                    {/* ชื่อ */}
+
                     <div className="space-y-2">
                         <Label htmlFor="edit-firstName">ชื่อ</Label>
                         <Input
@@ -152,7 +152,7 @@ export function EditFacultyDialog({ faculty, open, onOpenChange, onFacultyUpdate
                         />
                     </div>
 
-                    {/* นามสกุล */}
+
                     <div className="space-y-2">
                         <Label htmlFor="edit-lastName">นามสกุล</Label>
                         <Input
@@ -164,7 +164,7 @@ export function EditFacultyDialog({ faculty, open, onOpenChange, onFacultyUpdate
                         />
                     </div>
 
-                    {/* ปุ่ม */}
+
                     <div className="flex gap-2 pt-4">
                         <Button
                             type="button"

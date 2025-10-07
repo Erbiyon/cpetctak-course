@@ -11,9 +11,9 @@ export async function GET() {
 
         return NextResponse.json(faculties)
     } catch (error) {
-        console.error('Error fetching faculties:', error)
+        console.error('เกิดข้อผิดพลาดในการดึงข้อมูลบุคลากร:', error)
         return NextResponse.json(
-            { error: 'Failed to fetch faculties' },
+            { error: 'ไม่สามารถดึงข้อมูลบุคลากรได้' },
             { status: 500 }
         )
     }
@@ -41,9 +41,9 @@ export async function POST(request: NextRequest) {
 
         return NextResponse.json(faculty, { status: 201 })
     } catch (error) {
-        console.error('Error creating faculty:', error)
+        console.error('เกิดข้อผิดพลาดในการสร้างบุคลากร:', error)
         return NextResponse.json(
-            { error: 'Failed to create faculty' },
+            { error: 'ไม่สามารถสร้างบุคลากรได้' },
             { status: 500 }
         )
     }

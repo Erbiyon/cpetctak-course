@@ -51,14 +51,14 @@ export function DiplomaCourse() {
     const [subjects, setSubjects] = useState<Subject[]>([])
     const [isLoading, setIsLoading] = useState(true)
 
-    // ดึงข้อมูลรายวิชาจาก API
+
     const fetchSubjects = async () => {
         try {
             setIsLoading(true)
             const response = await fetch('/api/diploma-subjects')
             const data = await response.json()
             if (data.success) {
-                // ข้อมูลได้ถูกจัดเรียงจาก API แล้ว
+
                 setSubjects(data.subjects)
             }
         } catch (error) {
@@ -102,7 +102,7 @@ export function DiplomaCourse() {
                             </TableHeader>
                             <TableBody>
                                 {isLoading ? (
-                                    // Loading skeletons
+
                                     Array.from({ length: 3 }).map((_, index) => (
                                         <TableRow key={index}>
                                             <TableCell><Skeleton className="h-4 w-20" /></TableCell>
@@ -115,16 +115,16 @@ export function DiplomaCourse() {
                                         </TableRow>
                                     ))
                                 ) : subjects.length === 0 ? (
-                                    // Empty state
+
                                     <TableRow>
                                         <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
                                             ยังไม่มีรายวิชาในระบบ กรุณาเพิ่มรายวิชาใหม่
                                         </TableCell>
                                     </TableRow>
                                 ) : (
-                                    // Data rows
+
                                     subjects.map((subject, index) => {
-                                        // ตรวจสอบว่าเป็นกลุ่มวิชาใหม่หรือไม่
+
                                         const isNewGroup = index === 0 || subjects[index - 1].groupName !== subject.groupName
 
                                         return (

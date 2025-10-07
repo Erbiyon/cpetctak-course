@@ -63,7 +63,6 @@ export async function PUT(
         const body = await request.json();
         const { title, content, isPublished } = body;
 
-        // Check if blog exists
         const existingBlog = await prisma.activityBlog.findUnique({
             where: { id }
         });
@@ -75,13 +74,11 @@ export async function PUT(
             );
         }
 
-        // Build update data object
         const updateData: { title?: string; content?: string; isPublished?: boolean } = {};
         if (title !== undefined) updateData.title = title;
         if (content !== undefined) updateData.content = content;
         if (isPublished !== undefined) updateData.isPublished = isPublished;
 
-        // Update the blog
         const updatedBlog = await prisma.activityBlog.update({
             where: { id },
             data: updateData,
@@ -89,7 +86,7 @@ export async function PUT(
 
         return NextResponse.json(updatedBlog);
     } catch (error) {
-        console.error('Error updating activity blog:', error);
+        console.error('เกิดข้อผิดพลาดในการแก้ไขบล็อก:', error);
         return NextResponse.json(
             { error: 'เกิดข้อผิดพลาดในการแก้ไขบล็อก' },
             { status: 500 }
@@ -112,7 +109,6 @@ export async function DELETE(
             );
         }
 
-        // Check if blog exists
         const existingBlog = await prisma.activityBlog.findUnique({
             where: { id }
         });
@@ -124,16 +120,15 @@ export async function DELETE(
             );
         }
 
-        // Delete the blog
         await prisma.activityBlog.delete({
             where: { id }
         });
 
         return NextResponse.json({ message: 'ลบบล็อกเรียบร้อยแล้ว' });
     } catch (error) {
-        console.error('Error deleting activity blog:', error);
+        console.error('เกิดข้อผิดพลาดในการลบกิจกรรมบล็อก:', error);
         return NextResponse.json(
-            { error: 'เกิดข้อผิดพลาดในการลบบล็อก' },
+            { error: 'เกิดข้อผิดพลาดในการลบกิจกรรมบล็อก' },
             { status: 500 }
         );
     }

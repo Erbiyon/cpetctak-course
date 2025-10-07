@@ -30,9 +30,9 @@ export async function GET() {
             publishedBlogs: blogsCount
         })
     } catch (error) {
-        console.error('Error fetching stats:', error)
+        console.error('เกิดข้อผิดพลาดในการดึงข้อมูลสถานะ:', error)
         return NextResponse.json(
-            { error: 'Failed to fetch statistics' },
+            { error: 'ไม่สามารถดึงข้อมูลสถานะได้' },
             { status: 500 }
         )
     }

@@ -40,7 +40,6 @@ export default function ViewActivityPage() {
                     if (data.length > 0) {
                         setActivity(data[0].activity);
                     } else {
-                        // Fetch activity info separately if no blogs exist
                         const activityResponse = await fetch(`/api/activities/${activityId}`);
                         if (activityResponse.ok) {
                             const activityData = await activityResponse.json();

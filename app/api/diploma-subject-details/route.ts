@@ -15,7 +15,6 @@ export async function POST(request: Request) {
             description
         } = body
 
-        // ตรวจสอบว่ารายวิชามีอยู่หรือไม่
         const subject = await prisma.subject.findUnique({
             where: { id: subjectId }
         })
@@ -27,7 +26,6 @@ export async function POST(request: Request) {
             )
         }
 
-        // ตรวจสอบว่ามีรายละเอียดอยู่แล้วหรือไม่
         const existingDetail = await prisma.subjectDetail.findUnique({
             where: { subjectId }
         })
@@ -39,7 +37,6 @@ export async function POST(request: Request) {
             )
         }
 
-        // สร้างรายละเอียดรายวิชาใหม่
         const subjectDetail = await prisma.subjectDetail.create({
             data: {
                 subjectId,
@@ -60,7 +57,7 @@ export async function POST(request: Request) {
         })
 
     } catch (error) {
-        console.error('Error creating diploma subject detail:', error)
+        console.error('เกิดข้อผิดพลาดในการสร้างรายละเอียดหัวข้อประกาศนียบัตร:', error)
         return NextResponse.json(
             { success: false, error: 'ไม่สามารถเพิ่มรายละเอียดรายวิชาได้' },
             { status: 500 }
@@ -83,7 +80,7 @@ export async function GET() {
 
         return NextResponse.json({ success: true, subjectDetails })
     } catch (error) {
-        console.error('Error fetching diploma subject details:', error)
+        console.error('เกิดข้อผิดพลาดในการดึงข้อมูลรายละเอียดวิชาประกาศนียบัตร:', error)
         return NextResponse.json(
             { success: false, error: 'ไม่สามารถดึงข้อมูลรายละเอียดรายวิชาได้' },
             { status: 500 }

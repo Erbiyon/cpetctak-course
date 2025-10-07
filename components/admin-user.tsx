@@ -25,11 +25,11 @@ export function AdminUser() {
     const router = useRouter()
 
     const handleLogout = () => {
-        // ลบข้อมูล login จาก localStorage
+
         localStorage.removeItem("isAdminLoggedIn")
         localStorage.removeItem("adminUsername")
 
-        // redirect ไปหน้าหลัก
+
         router.push("/")
     }
 

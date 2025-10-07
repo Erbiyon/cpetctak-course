@@ -51,7 +51,7 @@ export default function AddActivityCourse({ onActivityAdded }: AddActivityCourse
                 toast.success('บันทึกกิจกรรมเรียบร้อยแล้ว');
                 setTitle('');
                 setIsOpen(false);
-                // Call callback if provided
+
                 if (onActivityAdded) {
                     onActivityAdded();
                 }

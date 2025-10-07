@@ -13,7 +13,6 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        // Check if activity exists
         const activity = await prisma.activity.findUnique({
             where: { id: parseInt(activityId) },
             include: {
@@ -28,7 +27,6 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        // Check if activity already has a blog
         if (activity.blogs.length > 0) {
             return NextResponse.json(
                 { error: 'กิจกรรมนี้มีบล็อกอยู่แล้ว กรุณาใช้การแก้ไข' },
@@ -47,7 +45,7 @@ export async function POST(request: NextRequest) {
 
         return NextResponse.json(activityBlog, { status: 201 });
     } catch (error) {
-        console.error('Error creating activity blog:', error);
+        console.error('เกิดข้อผิดพลาดในการสร้างบล็อก:', error);
         return NextResponse.json(
             { error: 'เกิดข้อผิดพลาดในการสร้างบล็อก' },
             { status: 500 }
@@ -77,7 +75,7 @@ export async function GET(request: NextRequest) {
 
         return NextResponse.json(activityBlogs);
     } catch (error) {
-        console.error('Error fetching activity blogs:', error);
+        console.error('เกิดข้อผิดพลาดในการดึงข้อมูลบล็อก:', error);
         return NextResponse.json(
             { error: 'เกิดข้อผิดพลาดในการดึงข้อมูลบล็อก' },
             { status: 500 }

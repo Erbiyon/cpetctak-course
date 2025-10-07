@@ -13,7 +13,7 @@ export function AuthGuard({ children, redirectTo = "/login" }: AuthGuardProps) {
     const router = useRouter();
 
     useEffect(() => {
-        // ตรวจสอบการ login จาก localStorage
+
         const isLoggedIn = localStorage.getItem("isAdminLoggedIn");
 
         if (isLoggedIn === "true") {
@@ -24,7 +24,7 @@ export function AuthGuard({ children, redirectTo = "/login" }: AuthGuardProps) {
         }
     }, [router, redirectTo]);
 
-    // แสดง loading หรือไม่แสดงอะไรขณะกำลังตรวจสอบ
+
     if (isAuthenticated === null) {
         return (
             <div className="min-h-screen flex items-center justify-center">
@@ -36,11 +36,11 @@ export function AuthGuard({ children, redirectTo = "/login" }: AuthGuardProps) {
         );
     }
 
-    // ถ้าไม่ได้ login ให้ redirect (จะทำใน useEffect แล้ว)
+
     if (!isAuthenticated) {
         return null;
     }
 
-    // ถ้า login แล้วให้แสดง children
+
     return <>{children}</>;
 }

@@ -43,7 +43,7 @@ export function AllActivities() {
     }, []);
 
     const getContentPreview = (htmlContent: string, maxLength = 150) => {
-        // ลบ HTML tags และตัด content สำหรับแสดงเป็น preview
+
         const textContent = htmlContent.replace(/<[^>]*>/g, '');
         return textContent.length > maxLength
             ? textContent.substring(0, maxLength) + '...'

@@ -9,18 +9,17 @@ export async function GET() {
                 firstName: true,
                 lastName: true,
                 imageUrl: true
-                // ไม่ดึง createdAt, updatedAt เพื่อความปลอดภัย
             },
             orderBy: [
-                { lastName: 'asc' }   // เรียงตามนามสกุล
+                { lastName: 'asc' }
             ]
         })
 
         return NextResponse.json(faculties)
     } catch (error) {
-        console.error('Error fetching public faculties:', error)
+        console.error('เกิดข้อผิดพลาดในการดึงข้อมูลคณะสาธารณะ:', error)
         return NextResponse.json(
-            { error: 'Failed to fetch faculties' },
+            { error: 'ไม่สามารถดึงข้อมูลคณะสาธารณะได้' },
             { status: 500 }
         )
     }

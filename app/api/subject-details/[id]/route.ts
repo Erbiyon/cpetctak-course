@@ -19,7 +19,6 @@ export async function PUT(
             description
         } = body
 
-        // ตรวจสอบว่ารายละเอียดมีอยู่หรือไม่
         const existingDetail = await prisma.subjectDetail.findUnique({
             where: { id }
         })
@@ -31,7 +30,6 @@ export async function PUT(
             )
         }
 
-        // อัปเดตรายละเอียดรายวิชา
         const subjectDetail = await prisma.subjectDetail.update({
             where: { id },
             data: {
@@ -52,7 +50,7 @@ export async function PUT(
         })
 
     } catch (error) {
-        console.error('Error updating subject detail:', error)
+        console.error('เกิดข้อผิดพลาดในการอัปเดตรายละเอียดรายวิชา:', error)
         return NextResponse.json(
             { success: false, error: 'ไม่สามารถแก้ไขรายละเอียดรายวิชาได้' },
             { status: 500 }
@@ -68,7 +66,6 @@ export async function DELETE(
         const { id: idParam } = await params
         const id = parseInt(idParam)
 
-        // ลบรายละเอียดรายวิชา
         await prisma.subjectDetail.delete({
             where: { id }
         })
@@ -79,7 +76,7 @@ export async function DELETE(
         })
 
     } catch (error) {
-        console.error('Error deleting subject detail:', error)
+        console.error('เกิดข้อผิดพลาดในการลบรายละเอียดรายวิชา:', error)
         return NextResponse.json(
             { success: false, error: 'ไม่สามารถลบรายละเอียดรายวิชาได้' },
             { status: 500 }

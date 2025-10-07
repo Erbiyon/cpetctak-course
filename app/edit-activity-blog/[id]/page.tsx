@@ -41,7 +41,7 @@ export default function EditActivityBlogPage() {
                     router.push('/activity-course');
                 }
             } catch (error) {
-                console.error('Error fetching blog:', error);
+                console.error('เกิดข้อผิดพลาดในการดึงข้อมูลบล็อก:', error);
                 toast.error('เกิดข้อผิดพลาดในการดึงข้อมูลบล็อก');
                 router.push('/activity-course');
             } finally {
@@ -68,7 +68,7 @@ export default function EditActivityBlogPage() {
         return (
             <div className="container mx-auto px-4 py-8">
                 <div className="text-center py-12">
-                    <h2 className="text-2xl font-bold text-gray-600 mb-4">
+                    <h2 className="text-2xl font-bold mb-4">
                         ไม่พบบล็อกที่ระบุ
                     </h2>
                     <Link href="/activity-course">

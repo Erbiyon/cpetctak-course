@@ -11,26 +11,21 @@ export async function GET(
         const { path } = await params
         const imagePath = path.join('/')
 
-        // Security check - prevent path traversal
         if (imagePath.includes('..') || imagePath.includes('\\')) {
-            return new NextResponse('Invalid path', { status: 400 })
+            return new NextResponse('ไม่สามารถเข้าถึงไฟล์นี้ได้', { status: 400 })
         }
 
         const filePath = join(process.cwd(), 'public', 'uploads', imagePath)
 
-        // Check if file exists
         if (!existsSync(filePath)) {
-            console.log(`Image not found: ${filePath}`)
-            return new NextResponse('Image not found', { status: 404 })
+            console.log(`ไม่พบรูปภาพ: ${filePath}`)
+            return new NextResponse('ไม่พบรูปภาพ', { status: 404 })
         }
 
-        // Get file stats for headers
         const stats = await stat(filePath)
 
-        // Read file
         const fileBuffer = await readFile(filePath)
 
-        // Determine content type based on file extension
         const fileExtension = imagePath.split('.').pop()?.toLowerCase()
         let contentType = 'application/octet-stream'
 
@@ -55,13 +50,12 @@ export async function GET(
                 contentType = 'application/octet-stream'
         }
 
-        // Return image with proper headers
         return new NextResponse(new Uint8Array(fileBuffer), {
             status: 200,
             headers: {
                 'Content-Type': contentType,
                 'Content-Length': stats.size.toString(),
-                'Cache-Control': 'no-cache, no-store, must-revalidate', // Force reload
+                'Cache-Control': 'no-cache, no-store, must-revalidate',
                 'Pragma': 'no-cache',
                 'Expires': '0',
                 'Last-Modified': stats.mtime.toUTCString(),
@@ -70,7 +64,7 @@ export async function GET(
         })
 
     } catch (error) {
-        console.error('Error serving image:', error)
-        return new NextResponse('Internal Server Error', { status: 500 })
+        console.error('เกิดข้อผิดพลาดในการให้บริการรูปภาพ:', error)
+        return new NextResponse('ไม่สามารถให้บริการรูปภาพได้', { status: 500 })
     }
 }
